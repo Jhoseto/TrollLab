@@ -1,72 +1,80 @@
+/* Основни стилове */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #f9f9f9;
+    color: #333;
     margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+    padding: 0;
+    display: block;
+    justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
-h1, h2 {
-    color: #333;
+.input-container, .comments-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.input-panel, .comments-panel {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #555;
+    margin-bottom: 20px;
 }
 
 form {
-    max-width: 600px;
-    width: 100%;
     margin-bottom: 20px;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-form label {
+label {
+    font-weight: bold;
     margin-right: 10px;
-    font-size: 1.1em;
 }
 
-form input[type="text"] {
-    width: 70%;
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
+input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1em;
+    width: 60%;
+    margin-bottom: 10px;
 }
 
-form button {
-    padding: 10px 20px;
+button {
     background-color: #4CAF50;
-    color: #fff;
+    color: white;
+    padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1em;
+    margin-top: 10px;
 }
 
-form button:hover {
+button:hover {
     background-color: #45a049;
 }
 
-#comments-container {
-    max-width: 800px;
-    width: 100%;
-    margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+/* Контейнер за коментари */
+.comments-panel {
+    background-color: #f9f9f9;
     padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: left;
+    margin-top: 20px; /* Добавен margin-top за разделение от формата */
 }
 
 .comment {
-    display: flex;
-    padding: 15px;
     border-bottom: 1px solid #eee;
+    padding: 10px 0;
 }
 
 .comment:last-child {
@@ -74,47 +82,51 @@ form button:hover {
 }
 
 .comment-content {
-    margin-left: 10px;
-    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .comment-author-name {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
 }
 
 .comment-text {
-    margin-bottom: 10px;
-    color: #555;
+    margin-bottom: 5px;
 }
 
 .comment-metadata {
-    font-size: 0.875rem;
-    color: #999;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: #777;
 }
 
-.comment-likes {
-    margin-left: 10px;
-}
-
+/* Пагинация */
 .pagination {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .pagination a {
-    color: #4CAF50;
-    padding: 10px 20px;
-    text-decoration: none;
-    border: 1px solid #4CAF50;
-    border-radius: 4px;
     margin: 0 5px;
-    transition: background-color 0.3s;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #4CAF50;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .pagination a:hover {
-    background-color: #45a049;
-    color: #fff;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination span {
+    margin: 0 5px;
+    padding: 10px 15px;
+    color: #555;
 }

@@ -13,22 +13,34 @@ import java.util.List;
 @Controller
 public class CommentController {
 
-    @Autowired
+
     private YouTubeServiceImpl youTubeService;
+
+    @Autowired
+    public CommentController(YouTubeServiceImpl youTubeService) {
+        this.youTubeService = youTubeService;
+    }
 
     @GetMapping("/comments")
     public String getComments(@RequestParam("videoUrl") String videoUrl,
                               @RequestParam(value = "pageToken", required = false) String pageToken,
+                              @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                               Model model) {
-        List<CommentViewModel> comments = youTubeService.getComments(videoUrl, pageToken);
-        String nextPageToken = null;
-        if (!comments.isEmpty() && comments.get(comments.size() - 1).getAuthorDisplayName().equals("nextPageToken")) {
-            nextPageToken = comments.remove(comments.size() - 1).getText();
-        }
-        model.addAttribute("comments", comments);
+        List<CommentViewModel> allComments = youTubeService.getComments(videoUrl, null);
+        int pageSize = 100;
+        int startIndex = (page - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, allComments.size());
+
+        List<CommentViewModel> paginatedComments = allComments.subList(startIndex, endIndex);
+        boolean hasPrevPage = page > 1;
+        boolean hasNextPage = endIndex < allComments.size();
+
+        model.addAttribute("comments", paginatedComments);
         model.addAttribute("videoUrl", videoUrl);
-        model.addAttribute("nextPageToken", nextPageToken);
-        return "comments";
+        model.addAttribute("currentPage", page);
+        model.addAttribute("hasPrevPage", hasPrevPage);
+        model.addAttribute("hasNextPage", hasNextPage);
+
+        return "index";
     }
 }
-

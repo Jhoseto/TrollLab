@@ -28,65 +28,64 @@ public class YouTubeServiceImpl {
 
         RestTemplate restTemplate = new RestTemplate();
         List<CommentViewModel> comments = new ArrayList<>();
-        String url = COMMENT_THREADS_URL +
-                "?part=snippet" +
-                "&videoId=" + videoId +
-                "&key=" + apiKey +
-                "&maxResults=100" +
-                (pageToken != null && !pageToken.isEmpty() ? "&pageToken=" + pageToken : "");
+        String nextPageToken = pageToken;
 
-        String response = restTemplate.getForObject(url, String.class);
+        do {
+            String url = COMMENT_THREADS_URL +
+                    "?part=snippet" +
+                    "&videoId=" + videoId +
+                    "&key=" + apiKey +
+                    "&maxResults=100" +
+                    (nextPageToken != null && !nextPageToken.isEmpty() ? "&pageToken=" + nextPageToken : "");
 
-        try {
-            assert response != null;
-            JSONObject jsonResponse = new JSONObject(response);
-            JSONArray items = jsonResponse.getJSONArray("items");
+            String response = restTemplate.getForObject(url, String.class);
 
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject item = items.getJSONObject(i);
-                JSONObject snippet = item.getJSONObject("snippet").getJSONObject("topLevelComment").getJSONObject("snippet");
-                String text = snippet.getString("textDisplay");
-                String authorDisplayName = snippet.getString("authorDisplayName");
-                String publishedAt = snippet.getString("publishedAt");
-                int likeCount = snippet.getInt("likeCount");
+            try {
+                assert response != null;
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray items = jsonResponse.getJSONArray("items");
 
-                // Преобразуване на publishedAt в желания формат
-                LocalDateTime publishedDateTime = LocalDateTime.parse(publishedAt, DateTimeFormatter.ISO_DATE_TIME);
-                String formattedPublishedAt = publishedDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+                for (int i = 0; i < items.length(); i++) {
+                    JSONObject item = items.getJSONObject(i);
+                    JSONObject snippet = item.getJSONObject("snippet").getJSONObject("topLevelComment").getJSONObject("snippet");
 
-                CommentViewModel comment = new CommentViewModel(text, authorDisplayName, formattedPublishedAt, likeCount);
-                comments.add(comment);
+                    CommentViewModel comment = new CommentViewModel(
+                            snippet.getString("textDisplay"),
+                            snippet.getString("authorDisplayName"),
+                            formatDate(snippet.getString("publishedAt")),
+                            snippet.getInt("likeCount")
+                    );
+                    comments.add(comment);
+                }
+
+                nextPageToken = jsonResponse.optString("nextPageToken", null);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to parse YouTube API response");
             }
 
-            String nextPageToken = jsonResponse.optString("nextPageToken", null);
-            if (nextPageToken != null) {
-                comments.add(new CommentViewModel("nextPageToken", nextPageToken, "", 0)); // Добавяне на nextPageToken като коментар
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } while (nextPageToken != null);
 
         return comments;
     }
 
     private String extractVideoId(String videoUrl) {
         String videoId = null;
-        try {
-            String[] query = videoUrl.split("\\?");
-            if (query.length > 1) {
-                String[] queryParams = query[1].split("&");
-                for (String param : queryParams) {
-                    String[] pair = param.split("=");
-                    if (pair.length > 1 && pair[0].equals("v")) {
-                        videoId = pair[1];
-                        break;
-                    }
-                }
+        if (videoUrl.contains("youtube.com")) {
+            videoId = videoUrl.split("v=")[1];
+            int ampersandPosition = videoId.indexOf('&');
+            if (ampersandPosition != -1) {
+                videoId = videoId.substring(0, ampersandPosition);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else if (videoUrl.contains("youtu.be")) {
+            videoId = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
         }
         return videoId;
+    }
+
+    private String formatDate(String date) {
+        LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }

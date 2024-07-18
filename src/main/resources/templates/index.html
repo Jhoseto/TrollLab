@@ -7,36 +7,49 @@
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-<h1>Comments Analysis</h1>
-<form action="/comments" method="get">
-    <label for="videoUrl">Video URL:</label>
-    <input type="text" id="videoUrl" name="videoUrl">
-    <button type="submit">Analyze</button>
-</form>
-<div th:if="${comments != null}">
-    <h2>Comments:</h2>
-
-    <!-- Пагинация горе -->
-    <div th:if="${nextPageToken != null}" class="pagination">
-        <a th:href="@{/comments(videoUrl=${videoUrl}, pageToken=${nextPageToken})}">Next Page</a>
+<div class="input-container">
+    <div class="input-panel">
+        <h1>Comments Analysis</h1>
+        <form action="/comments" method="get">
+            <label for="videoUrl">Video URL:</label>
+            <input type="text" id="videoUrl" name="videoUrl">
+            <button type="submit">Analyze</button>
+        </form>
     </div>
+</div>
 
-    <div id="comments-container">
-        <div th:each="comment : ${comments}" class="comment">
-            <div th:if="${comment.authorDisplayName != 'nextPageToken'}" class="comment-content">
-                <div class="comment-author-name" th:text="${comment.authorDisplayName}"></div>
-                <div class="comment-text" th:text="${comment.text}"></div>
-                <div class="comment-metadata">
-                    <span class="comment-date" th:text="${comment.publishedAt}"></span>
-                    <span class="comment-likes" th:text="${comment.likeCount} + ' likes'"></span>
+<div class="comments-container">
+    <div th:if="${comments != null}" class="comments-panel">
+        <h2>Comments: </h2>
+
+        <!-- Пагинация горе -->
+        <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1)}">First Page</a>
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1})}">Previous Page</a>
+            <span th:text="'Page ' + ${currentPage}"></span>
+            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1})}">Next Page</a>
+        </div>
+
+        <div id="comments-container">
+            <div th:each="comment : ${comments}" class="comment">
+                <div class="comment-content">
+                    <div class="comment-author-name" th:text="${comment.authorDisplayName}"></div>
+                    <div class="comment-text" th:utext="${comment.text}"></div> <!-- Use th:utext for HTML content -->
+                    <div class="comment-metadata">
+                        <span class="comment-date" th:text="${comment.publishedAt}"></span>
+                        <span class="comment-likes" th:text="${comment.likeCount} + ' likes'"></span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Пагинация долу -->
-    <div th:if="${nextPageToken != null}" class="pagination">
-        <a th:href="@{/comments(videoUrl=${videoUrl}, pageToken=${nextPageToken})}">Next Page</a>
+        <!-- Пагинация долу -->
+        <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1)}">First Page</a>
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1})}">Previous Page</a>
+            <span th:text="'Page ' + ${currentPage}"></span>
+            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1})}">Next Page</a>
+        </div>
     </div>
 </div>
 </body>
