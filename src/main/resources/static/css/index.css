@@ -49,7 +49,7 @@ input[type="text"] {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #fc394e;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -59,7 +59,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #fb394e;
 }
 
 /* Контейнер за коментари */
@@ -114,14 +114,14 @@ button:hover {
     margin: 0 5px;
     padding: 10px 15px;
     text-decoration: none;
-    color: #4CAF50;
+    color: #f42c31;
     border: 1px solid #ddd;
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .pagination a:hover {
-    background-color: #4CAF50;
+    background-color: #f32c31;
     color: white;
 }
 

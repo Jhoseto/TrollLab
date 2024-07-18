@@ -12,6 +12,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -22,7 +24,7 @@ public class YouTubeServiceImpl {
 
     private static final String COMMENT_THREADS_URL = "https://www.googleapis.com/youtube/v3/commentThreads";
 
-    public List<CommentViewModel> getComments(String videoUrl, String pageToken) {
+    public List<CommentViewModel> getComments(String videoUrl, String pageToken, String sort) {
         String videoId = extractVideoId(videoUrl);
         if (videoId == null) {
             throw new IllegalArgumentException("Invalid YouTube video URL: " + videoUrl);
@@ -69,6 +71,23 @@ public class YouTubeServiceImpl {
 
         } while (nextPageToken != null);
 
+        // Apply sorting based on the selected option
+        switch (sort) {
+            case "newest":
+                Collections.sort(comments, Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
+                break;
+            case "oldest":
+                Collections.sort(comments, Comparator.comparing(CommentViewModel::getPublishedAt));
+                break;
+            case "most-liked":
+                Collections.sort(comments, Comparator.comparingInt(CommentViewModel::getLikeCount).reversed());
+                break;
+            default:
+                // Default sorting by newest
+                Collections.sort(comments, Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
+                break;
+        }
+
         return comments;
     }
 
@@ -93,6 +112,4 @@ public class YouTubeServiceImpl {
         ZonedDateTime adjustedTime = zonedDateTime.plusHours(3);
         return adjustedTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
-
-
 }

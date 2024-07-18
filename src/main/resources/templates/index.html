@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comments Analysis</title>
     <link rel="stylesheet" href="/css/index.css">
+    <script th:inline="javascript">
+        function sortBySelectedOption() {
+            var selectBox = document.getElementById("sort");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set("sort", selectedValue);
+            window.location.replace(currentUrl.toString()); // Replace to avoid saving history state
+        }
+
+        // Function to set selected option on page load
+        function setSelectedOption() {
+            var sortParam = new URLSearchParams(window.location.search).get("sort");
+            if (sortParam) {
+                document.getElementById("sort").value = sortParam;
+            }
+        }
+
+        // Call setSelectedOption function on page load
+        window.onload = setSelectedOption;
+    </script>
 </head>
 <body>
 <div class="input-container">
@@ -12,7 +32,7 @@
         <h1>Comments Analysis</h1>
         <form action="/comments" method="get">
             <label for="videoUrl">Video URL:</label>
-            <input type="text" id="videoUrl" name="videoUrl">
+            <input type="text" id="videoUrl" name="videoUrl" th:value="${videoUrl}">
             <button type="submit">Analyze</button>
         </form>
     </div>
@@ -20,14 +40,22 @@
 
 <div class="comments-container">
     <div th:if="${comments != null}" class="comments-panel">
-        <h2>Comments: </h2>
+        <h2>Total comments: <span th:text="${allComments.size()}"></span></h2> <!-- Display comment count -->
+
+        <!-- Падащо меню за сортиране -->
+        <label for="sort">Sort by:</label>
+        <select id="sort" name="sort" onchange="sortBySelectedOption()">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="most-liked">Most Liked</option>
+        </select>
 
         <!-- Пагинация горе -->
         <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1)}">First Page</a>
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1})}">Previous Page</a>
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
             <span th:text="'Page ' + ${currentPage}"></span>
-            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1})}">Next Page</a>
+            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1}, sort=${sort})}">Next Page</a>
         </div>
 
         <div id="comments-container">
@@ -45,10 +73,10 @@
 
         <!-- Пагинация долу -->
         <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1)}">First Page</a>
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1})}">Previous Page</a>
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
+            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
             <span th:text="'Page ' + ${currentPage}"></span>
-            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1})}">Next Page</a>
+            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1}, sort=${sort})}">Next Page</a>
         </div>
     </div>
 </div>
