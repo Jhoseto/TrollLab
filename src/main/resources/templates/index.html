@@ -42,15 +42,16 @@
     <div th:if="${comments != null}" class="comments-panel">
         <h2>Total comments: <span th:text="${allComments.size()}"></span></h2> <!-- Display comment count -->
 
-        <!-- Падащо меню за сортиране -->
+        <!-- Dropdown menu for sorting -->
         <label for="sort">Sort by:</label>
         <select id="sort" name="sort" onchange="sortBySelectedOption()">
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
-            <option value="most-liked">Most Liked</option>
+            <option value="most-liked">Most Liked Troll</option>
+            <option value="most-comments">Most Comments Troll</option> <!-- Added option for most comments -->
         </select>
 
-        <!-- Пагинация горе -->
+        <!-- Pagination top -->
         <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
             <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
             <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
@@ -61,7 +62,10 @@
         <div id="comments-container">
             <div th:each="comment : ${comments}" class="comment">
                 <div class="comment-content">
-                    <div class="comment-author-name" th:text="${comment.authorDisplayName}"></div>
+                    <div class="comment-author-name">
+                        <a th:href="${comment.authorProfileUrl}" th:text="${comment.authorDisplayName}" target="_blank">Author Name</a>
+                        <span th:text="' (' + ${comment.totalComments} + ' comments)'"></span>
+                    </div>
                     <div class="comment-text" th:utext="${comment.text}"></div> <!-- Use th:utext for HTML content -->
                     <div class="comment-metadata">
                         <span class="comment-date" th:text="${comment.publishedAt}"></span>
@@ -71,7 +75,7 @@
             </div>
         </div>
 
-        <!-- Пагинация долу -->
+        <!-- Pagination bottom -->
         <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
             <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
             <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class YouTubeServiceImpl {
@@ -57,7 +59,8 @@ public class YouTubeServiceImpl {
                             snippet.getString("textDisplay"),
                             snippet.getString("authorDisplayName"),
                             formatDate(snippet.getString("publishedAt")),
-                            snippet.getInt("likeCount")
+                            snippet.getInt("likeCount"),
+                            0 // Инициализация на броя на коментарите
                     );
                     comments.add(comment);
                 }
@@ -71,10 +74,25 @@ public class YouTubeServiceImpl {
 
         } while (nextPageToken != null);
 
+        // Събиране на броя на коментарите на потребителите
+        Map<String, Long> userCommentCount = comments.stream()
+                .collect(Collectors.groupingBy(CommentViewModel::getAuthorDisplayName, Collectors.counting()));
+
+        comments.forEach(comment -> {
+            int totalComments = userCommentCount.getOrDefault(comment.getAuthorDisplayName(), 0L).intValue();
+            comment.setTotalComments(totalComments);
+        });
+
+        comments.forEach(comment -> {
+            //  URL на профила на na User v  YouTube
+            String profileUrl = "https://www.youtube.com/" + comment.getAuthorDisplayName();
+            comment.setAuthorProfileUrl(profileUrl);
+        });
+
         // Apply sorting based on the selected option
         switch (sort) {
             case "newest":
-                Collections.sort(comments, Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
+                comments.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
                 break;
             case "oldest":
                 Collections.sort(comments, Comparator.comparing(CommentViewModel::getPublishedAt));
@@ -82,28 +100,43 @@ public class YouTubeServiceImpl {
             case "most-liked":
                 Collections.sort(comments, Comparator.comparingInt(CommentViewModel::getLikeCount).reversed());
                 break;
+            case "most-comments":
+                // Sort users by comment count descending
+                comments.sort((c1, c2) -> {
+                    long count1 = userCommentCount.getOrDefault(c1.getAuthorDisplayName(), 0L);
+                    long count2 = userCommentCount.getOrDefault(c2.getAuthorDisplayName(), 0L);
+                    return Long.compare(count2, count1); // Descending order
+                });
+                break;
             default:
                 // Default sorting by newest
-                Collections.sort(comments, Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
+                comments.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
                 break;
         }
 
         return comments;
     }
 
+
     private String extractVideoId(String videoUrl) {
         String videoId = null;
         if (videoUrl.contains("youtube.com")) {
-            videoId = videoUrl.split("v=")[1];
-            int ampersandPosition = videoId.indexOf('&');
-            if (ampersandPosition != -1) {
-                videoId = videoId.substring(0, ampersandPosition);
+
+            String[] urlParts = videoUrl.split("v=");
+            if (urlParts.length > 1) {
+                videoId = urlParts[1].split("&")[0];
             }
         } else if (videoUrl.contains("youtu.be")) {
-            videoId = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
+
+            int indexOfEqualSign = videoUrl.indexOf('=');
+            if (indexOfEqualSign != -1) {
+                videoId = videoUrl.substring(indexOfEqualSign + 1);
+            }
         }
         return videoId;
     }
+
+
 
     private String formatDate(String date) {
         LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);

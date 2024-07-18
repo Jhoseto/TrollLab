@@ -14,12 +14,15 @@ public class CommentViewModel {
     private int totalReplyCount;
     private boolean isPublic;
     private List<CommentViewModel> replies;
+    private int totalComments;
+    private String authorProfileUrl;
 
-    public CommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount) {
+    public CommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount, int totalComments) {
         this.text = text;
         this.authorDisplayName = authorDisplayName;
         this.publishedAt = publishedAt;
         this.likeCount = likeCount;
+        this.totalComments = totalComments;
     }
 
     public String getId() {
@@ -118,6 +121,24 @@ public class CommentViewModel {
 
     public CommentViewModel setReplies(List<CommentViewModel> replies) {
         this.replies = replies;
+        return this;
+    }
+
+    public int getTotalComments() {
+        return totalComments;
+    }
+
+    public CommentViewModel setTotalComments(int totalComments) {
+        this.totalComments = totalComments;
+        return this;
+    }
+
+    public String getAuthorProfileUrl() {
+        return authorProfileUrl;
+    }
+
+    public CommentViewModel setAuthorProfileUrl(String authorProfileUrl) {
+        this.authorProfileUrl = authorProfileUrl;
         return this;
     }
 }
