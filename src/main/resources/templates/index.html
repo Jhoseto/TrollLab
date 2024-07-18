@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments Analysis</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<h1>Comments Analysis</h1>
+<form action="/comments" method="get">
+    <label for="videoUrl">Video URL:</label>
+    <input type="text" id="videoUrl" name="videoUrl">
+    <button type="submit">Analyze</button>
+</form>
+<div th:if="${comments != null}">
+    <h2>Comments:</h2>
+
+    <!-- Пагинация горе -->
+    <div th:if="${nextPageToken != null}" class="pagination">
+        <a th:href="@{/comments(videoUrl=${videoUrl}, pageToken=${nextPageToken})}">Next Page</a>
+    </div>
+
+    <div id="comments-container">
+        <div th:each="comment : ${comments}" class="comment">
+            <div th:if="${comment.authorDisplayName != 'nextPageToken'}" class="comment-content">
+                <div class="comment-author-name" th:text="${comment.authorDisplayName}"></div>
+                <div class="comment-text" th:text="${comment.text}"></div>
+                <div class="comment-metadata">
+                    <span class="comment-date" th:text="${comment.publishedAt}"></span>
+                    <span class="comment-likes" th:text="${comment.likeCount} + ' likes'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пагинация долу -->
+    <div th:if="${nextPageToken != null}" class="pagination">
+        <a th:href="@{/comments(videoUrl=${videoUrl}, pageToken=${nextPageToken})}">Next Page</a>
+    </div>
+</div>
+</body>
+</html>
