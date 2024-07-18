@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +88,11 @@ public class YouTubeServiceImpl {
 
     private String formatDate(String date) {
         LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        ZoneId zoneId = ZoneId.of("Europe/Sofia");
+        ZonedDateTime zonedDateTime = dateTime.atZone(zoneId);
+        ZonedDateTime adjustedTime = zonedDateTime.plusHours(3);
+        return adjustedTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
+
+
 }

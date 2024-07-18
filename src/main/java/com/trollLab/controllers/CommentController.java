@@ -14,7 +14,7 @@ import java.util.List;
 public class CommentController {
 
 
-    private YouTubeServiceImpl youTubeService;
+    private final YouTubeServiceImpl youTubeService;
 
     @Autowired
     public CommentController(YouTubeServiceImpl youTubeService) {
