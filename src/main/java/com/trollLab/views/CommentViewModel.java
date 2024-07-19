@@ -16,6 +16,7 @@ public class CommentViewModel {
     private List<CommentViewModel> replies;
     private int totalComments;
     private String authorProfileUrl;
+    private boolean isTopLevelComment;
 
     public CommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount, int totalComments) {
         this.text = text;
@@ -140,5 +141,13 @@ public class CommentViewModel {
     public CommentViewModel setAuthorProfileUrl(String authorProfileUrl) {
         this.authorProfileUrl = authorProfileUrl;
         return this;
+    }
+
+    public boolean isTopLevelComment() {
+        return isTopLevelComment;
+    }
+
+    public void setIsTopLevelComment(boolean isTopLevelComment) {
+        this.isTopLevelComment = isTopLevelComment;
     }
 }

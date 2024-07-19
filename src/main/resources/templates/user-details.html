@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подробности за потребителя</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Включете вашите CSS стилове тук -->
+    <script src="scripts.js" defer></script> <!-- Включете вашите JavaScript файлове тук -->
+</head>
+<body>
+<header>
+    <h1>Подробности за потребителя</h1>
+    <nav>
+        <a href="index.html">Начало</a> | <a href="comments.html">Коментари</a>
+    </nav>
+</header>
+
+<main>
+    <!-- Информация за потребителя -->
+    <section id="user-info">
+        <h2>Информация за потребителя</h2>
+        <img src="{{userProfileImageUrl}}" alt="Profile Image" class="profile-img">
+        <h3>{{userName}}</h3>
+        <p><a href="{{userProfileUrl}}" target="_blank">Посетете профила на YouTube</a></p>
+        <p>Общ брой коментари: {{totalComments}}</p>
+    </section>
+
+    <!-- Списък с коментарите на потребителя -->
+    <section id="user-comments">
+        <h2>Коментари на потребителя</h2>
+        <ul>
+            {{#each comments}}
+            <li>
+                <p><strong>Дата:</strong> {{publishedAt}}</p>
+                <p><strong>Коментар:</strong> {{textDisplay}}</p>
+                <p><strong>Лайкове:</strong> {{likeCount}}</p>
+            </li>
+            {{/each}}
+        </ul>
+    </section>
+
+    <!-- Списък с отговорите на потребителя -->
+    <section id="user-replies">
+        <h2>Отговори на потребителя</h2>
+        <ul>
+            {{#each replies}}
+            <li>
+                <p><strong>Дата:</strong> {{publishedAt}}</p>
+                <p><strong>Коментар:</strong> {{textDisplay}}</p>
+                <p><strong>Лайкове:</strong> {{likeCount}}</p>
+                <p><strong>Отговор на:</strong> {{parentCommentText}}</p>
+            </li>
+            {{/each}}
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 TrollLab</p>
+</footer>
+</body>
+</html>

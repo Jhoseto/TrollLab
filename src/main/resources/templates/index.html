@@ -67,6 +67,7 @@
             <select id="sort" name="sort" onchange="sortBySelectedOption()">
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
+                <option value="only-replied">Only Replayed Comments</option>
                 <option value="most-liked">Most Liked Troll</option>
                 <option value="most-comments">Most Comments Troll</option>
             </select>
@@ -82,7 +83,13 @@
                 <div th:each="comment : ${comments}" class="comment">
                     <div class="comment-content">
                         <div class="comment-author-name">
-                            <a th:href="${comment.authorProfileUrl}" th:text="${comment.authorDisplayName}" target="_blank">Author Name</a>
+                            <!-- Форма за изпращане на POST заявка към контролера -->
+                            <form action="/user-details"
+                                  method="post">
+                                <!-- Скрито поле с информация за името на потребителя -->
+                                <input type="hidden" name="userId" th:value="${comment.authorDisplayName}" />
+                                <button type="submit" class="btn btn-link" th:text="${comment.authorDisplayName}">Author Name</button>
+                            </form>
                             <span th:text="' (' + ${comment.totalComments} + ' comments)'"></span>
                         </div>
                         <div class="comment-text" th:utext="${comment.text}"></div>
