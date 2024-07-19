@@ -3,18 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments Analysis</title>
+    <title>Trolls Analysis</title>
     <link rel="stylesheet" href="/css/index.css">
-    <script th:inline="javascript">
+    <style>
+        body {
+            background: url('/images/troll2.png') no-repeat center top;
+            background-size: cover;
+            transition: background 1s ease-in-out;
+        }
+
+        body.loaded1 {
+            background:
+                    url('/images/troll3.png') no-repeat center top,
+                    url('/images/troll2.png') no-repeat center center,
+                    url('/images/troll3.png') no-repeat center bottom;
+            background-size: cover, cover, cover;
+        }
+
+
+    </style>
+    <script>
         function sortBySelectedOption() {
             var selectBox = document.getElementById("sort");
             var selectedValue = selectBox.options[selectBox.selectedIndex].value;
             var currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set("sort", selectedValue);
-            window.location.replace(currentUrl.toString()); // Replace to avoid saving history state
+            window.location.replace(currentUrl.toString());
         }
 
-        // Function to set selected option on page load
         function setSelectedOption() {
             var sortParam = new URLSearchParams(window.location.search).get("sort");
             if (sortParam) {
@@ -22,65 +38,81 @@
             }
         }
 
-        // Call setSelectedOption function on page load
-        window.onload = setSelectedOption;
+        window.onload = function() {
+            setSelectedOption();
+
+            // Add 'loaded1' class to the body
+            document.body.classList.add('loaded1');
+        }
     </script>
 </head>
-<body>
-<div class="input-container">
-    <div class="input-panel">
-        <h1>Comments Analysis</h1>
-        <form action="/comments" method="get">
-            <label for="videoUrl">Video URL:</label>
-            <input type="text" id="videoUrl" name="videoUrl" th:value="${videoUrl}">
-            <button type="submit">Analyze</button>
-        </form>
-    </div>
-</div>
-
-<div class="comments-container">
-    <div th:if="${comments != null}" class="comments-panel">
-        <h2>Total comments: <span th:text="${allComments.size()}"></span></h2> <!-- Display comment count -->
-
-        <!-- Dropdown menu for sorting -->
-        <label for="sort">Sort by:</label>
-        <select id="sort" name="sort" onchange="sortBySelectedOption()">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="most-liked">Most Liked Troll</option>
-            <option value="most-comments">Most Comments Troll</option> <!-- Added option for most comments -->
-        </select>
-
-        <!-- Pagination top -->
-        <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
-            <span th:text="'Page ' + ${currentPage}"></span>
-            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1}, sort=${sort})}">Next Page</a>
+<body class="loaded1">
+<div class="container">
+    <div class="input-container">
+        <div class="input-panel">
+            <h1>Comments Analysis</h1>
+            <form action="/comments" method="get">
+                <label for="videoUrl">Video URL:</label>
+                <input type="text" id="videoUrl" name="videoUrl" th:value="${videoUrl}">
+                <button type="submit">Analyze</button>
+            </form>
         </div>
+    </div>
 
-        <div id="comments-container">
-            <div th:each="comment : ${comments}" class="comment">
-                <div class="comment-content">
-                    <div class="comment-author-name">
-                        <a th:href="${comment.authorProfileUrl}" th:text="${comment.authorDisplayName}" target="_blank">Author Name</a>
-                        <span th:text="' (' + ${comment.totalComments} + ' comments)'"></span>
+    <div class="comments-container">
+        <div th:if="${comments != null}" class="comments-panel">
+            <h2>Total comments: <span th:text="${allComments.size()}"></span></h2>
+
+            <label for="sort">Sort by:</label>
+            <select id="sort" name="sort" onchange="sortBySelectedOption()">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="most-liked">Most Liked Troll</option>
+                <option value="most-comments">Most Comments Troll</option>
+            </select>
+
+            <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
+                <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
+                <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
+                <span th:text="'Page ' + ${currentPage}"></span>
+                <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1}, sort=${sort})}">Next Page</a>
+            </div>
+
+            <div id="comments-container">
+                <div th:each="comment : ${comments}" class="comment">
+                    <div class="comment-content">
+                        <div class="comment-author-name">
+                            <a th:href="${comment.authorProfileUrl}" th:text="${comment.authorDisplayName}" target="_blank">Author Name</a>
+                            <span th:text="' (' + ${comment.totalComments} + ' comments)'"></span>
+                        </div>
+                        <div class="comment-text" th:utext="${comment.text}"></div>
+                        <div class="comment-metadata">
+                            <span class="comment-date" th:text="${comment.publishedAt}"></span>
+                            <span class="comment-likes" th:text="${comment.likeCount} + ' likes'"></span>
+                        </div>
                     </div>
-                    <div class="comment-text" th:utext="${comment.text}"></div> <!-- Use th:utext for HTML content -->
-                    <div class="comment-metadata">
-                        <span class="comment-date" th:text="${comment.publishedAt}"></span>
-                        <span class="comment-likes" th:text="${comment.likeCount} + ' likes'"></span>
+                    <!-- Show replies if available -->
+                    <div th:if="${comment.replies != null}" class="reply-container">
+                        <div th:each="reply : ${comment.replies}" class="reply">
+                            <div class="comment-author-name">
+                                <a th:href="${reply.authorProfileUrl}" th:text="${reply.authorDisplayName}" target="_blank">Author Name</a>
+                            </div>
+                            <div class="comment-text" th:utext="${reply.text}"></div>
+                            <div class="comment-metadata">
+                                <span class="comment-date" th:text="${reply.publishedAt}"></span>
+                                <span class="comment-likes" th:text="${reply.likeCount} + ' likes'"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Pagination bottom -->
-        <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
-            <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
-            <span th:text="'Page ' + ${currentPage}"></span>
-            <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1}, sort=${sort})}">Next Page</a>
+            <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
+                <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
+                <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
+                <span th:text="'Page ' + ${currentPage}"></span>
+                <a th:if="${hasNextPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage + 1}, sort=${sort})}">Next Page</a>
+            </div>
         </div>
     </div>
 </div>

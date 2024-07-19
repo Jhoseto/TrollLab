@@ -110,8 +110,8 @@ public class CommentViewModel {
         return isPublic;
     }
 
-    public CommentViewModel setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
+    public CommentViewModel setPublic(boolean aPublic) {
+        isPublic = aPublic;
         return this;
     }
 

@@ -1,20 +1,20 @@
-/* Основни стилове */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
     color: #333;
     margin: 0;
     padding: 0;
-    display: block;
+    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    transition: background 1s ease-in-out;
 }
 
 .input-container, .comments-container {
     width: 80%;
-    max-width: 800px;
-    margin: 20px auto;
+    max-width: 900px;
+    min-width: 800px;
+    margin: 0; /* Премахваме маргините за да центрираме вертикално и хоризонтално */
 }
 
 .input-panel, .comments-panel {
@@ -129,4 +129,52 @@ button:hover {
     margin: 0 5px;
     padding: 10px 15px;
     color: #555;
+}
+
+/* Допълнителни стилове за отговори */
+.comment {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+}
+
+.comment-content {
+    margin-bottom: 5px;
+}
+
+.reply {
+    border-left: 2px solid #ddd;
+    padding-left: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    background: #f1f1f1;
+}
+
+.comment-author-name {
+    font-weight: bold;
+}
+
+.comment-text {
+    margin: 5px 0;
+}
+
+.comment-metadata {
+    font-size: small;
+    color: #555;
+}
+
+/* Пагинация стили */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #ff0000;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
 }

@@ -25,6 +25,7 @@ public class YouTubeServiceImpl {
     private String apiKey;
 
     private static final String COMMENT_THREADS_URL = "https://www.googleapis.com/youtube/v3/commentThreads";
+    private static final String COMMENTS_URL = "https://www.googleapis.com/youtube/v3/comments";
 
     public List<CommentViewModel> getComments(String videoUrl, String pageToken, String sort) {
         String videoId = extractVideoId(videoUrl);
@@ -38,7 +39,7 @@ public class YouTubeServiceImpl {
 
         do {
             String url = COMMENT_THREADS_URL +
-                    "?part=snippet" +
+                    "?part=snippet,replies" +
                     "&videoId=" + videoId +
                     "&key=" + apiKey +
                     "&maxResults=100" +
@@ -62,6 +63,27 @@ public class YouTubeServiceImpl {
                             snippet.getInt("likeCount"),
                             0 // Инициализация на броя на коментарите
                     );
+
+                    // Добавяне на отговорите, ако има такива
+                    JSONArray repliesArray = item.optJSONObject("replies") != null ? item.optJSONObject("replies").optJSONArray("comments") : null;
+                    if (repliesArray != null) {
+                        List<CommentViewModel> replies = new ArrayList<>();
+                        for (int j = 0; j < repliesArray.length(); j++) {
+                            JSONObject replyObject = repliesArray.getJSONObject(j);
+                            JSONObject replySnippet = replyObject.getJSONObject("snippet");
+
+                            CommentViewModel reply = new CommentViewModel(
+                                    replySnippet.getString("textDisplay"),
+                                    replySnippet.getString("authorDisplayName"),
+                                    formatDate(replySnippet.getString("publishedAt")),
+                                    replySnippet.getInt("likeCount"),
+                                    0 // Инициализация на броя на коментарите
+                            );
+                            replies.add(reply);
+                        }
+                        comment.setReplies(replies);
+                    }
+
                     comments.add(comment);
                 }
 
@@ -84,7 +106,7 @@ public class YouTubeServiceImpl {
         });
 
         comments.forEach(comment -> {
-            //  URL на профила на na User v  YouTube
+            // URL на профила на потребителя в YouTube
             String profileUrl = "https://www.youtube.com/" + comment.getAuthorDisplayName();
             comment.setAuthorProfileUrl(profileUrl);
         });
