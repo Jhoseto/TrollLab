@@ -1,36 +1,53 @@
+/* Основни стилове за body */
 body {
     font-family: Arial, sans-serif;
     color: #333;
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Подравняваме панелите вертикално */
     align-items: center;
     min-height: 100vh;
-    transition: background 1s ease-in-out;
+    background-color: #f0f0f0; /* По-светъл фон за цялата страница */
+}
+header {
+    max-width: 850px;
+    min-width: 850px;
+    background-color: white;
+    text-align: center;
 }
 
-.input-container, .comments-container {
-    width: 80%;
+header img {
+    height: 250px; /* Adjust the height as needed */
+}
+/* Контейнери */
+.input-container, .comments-container, .video-panel {
+    width: 100%; /* Широчина на 100% от родителския елемент */
     max-width: 900px;
-    min-width: 800px;
-    margin: 0; /* Премахваме маргините за да центрираме вертикално и хоризонтално */
+    min-width: 900px;
+    margin: 20px 0; /* Добавяме малко разстояние между панелите */
+    box-sizing: border-box; /* Включва padding и border в ширината на елемента */
 }
 
-.input-panel, .comments-panel {
+/* Стилове за панелите */
+.input-panel, .comments-panel, .video-panel {
     background-color: white;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* По-силен shadow */
+    box-sizing: border-box; /* Включва padding и border в ширината на панела */
 }
 
+/* Заглавия */
 h1 {
+    position: static;
     color: #555;
     margin-bottom: 20px;
+    align-items: center;
 }
 
+/* Формуляри */
 form {
     margin-bottom: 20px;
 }
@@ -41,17 +58,17 @@ label {
 }
 
 input[type="text"] {
-    padding: 5px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 60%;
+    width: calc(100% - 120px); /* Адаптирано за да остави място за бутона */
     margin-bottom: 10px;
 }
 
 button {
     background-color: #fc394e;
     color: white;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -62,14 +79,13 @@ button:hover {
     background-color: #fb394e;
 }
 
-/* Контейнер за коментари */
+/* Панел за коментари */
 .comments-panel {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    text-align: left;
-    margin-top: 20px; /* Добавен margin-top за разделение от формата */
+    border-radius: 8px;
+    margin-top: 20px;
 }
 
 .comment {
@@ -106,8 +122,7 @@ button:hover {
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .pagination a {
@@ -131,50 +146,26 @@ button:hover {
     color: #555;
 }
 
-/* Допълнителни стилове за отговори */
-.comment {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    background: #f9f9f9;
-}
-
-.comment-content {
-    margin-bottom: 5px;
-}
-
+/* Стилове за отговори */
 .reply {
     border-left: 2px solid #ddd;
-    padding-left: 10px;
+    padding-left: 15px;
     margin-left: 20px;
     margin-bottom: 10px;
     background: #f1f1f1;
 }
 
-.comment-author-name {
-    font-weight: bold;
+/* Стилове за видеопанела */
+.video-panel {
+    text-align: center;
+    margin: 20px 0;
 }
 
-.comment-text {
-    margin: 5px 0;
-}
-
-.comment-metadata {
-    font-size: small;
-    color: #555;
-}
-
-/* Пагинация стили */
-.pagination {
-    margin-top: 20px;
-}
-
-.pagination a {
-    margin: 0 5px;
-    text-decoration: none;
-    color: #ff0000;
-}
-
-.pagination a:hover {
-    text-decoration: underline;
+.video-panel iframe {
+    width: 100%; /* Широчината на iframe да бъде 100% от родителския елемент */
+    max-width: 900px; /* Максимална ширина на iframe, съвпадаща с максималната ширина на панелите */
+    height: 500px; /* Височина на видеото */
+    border-radius: 8px; /* Заоблени ъгли */
+    border: none; /* Премахване на борда около iframe */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* По-силен shadow */
 }

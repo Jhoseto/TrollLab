@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
                     JSONObject item = items.getJSONObject(i);
                     JSONObject snippet = item.getJSONObject("snippet").getJSONObject("topLevelComment").getJSONObject("snippet");
 
-
                     CommentViewModel comment = new CommentViewModel(
                             snippet.getString("textDisplay"),
                             snippet.getString("authorDisplayName"),
@@ -77,13 +76,11 @@ public class UserServiceImpl implements UserService {
                     comment.setIsTopLevelComment(true);
                     comment.setId(item.getJSONObject("snippet").getJSONObject("topLevelComment").getString("id"));
                     comment.setParentId(null);
-                    comment.setAuthorProfileUrl("https://www.youtube.com/channel/" +authorID);
+                    comment.setParentCommentText(null); // Няма parentCommentText за топ коментари
+                    comment.setAuthorProfileUrl("https://www.youtube.com/" + authorID);
 
                     allComments.add(comment);
-
-                    if (authorID.equals(userId)) {
-                        topLevelComments.put(comment.getId(), comment);
-                    }
+                    topLevelComments.put(comment.getId(), comment); // Ensure we store top-level comments
 
                     JSONArray repliesArray = item.optJSONObject("replies") != null ? item.optJSONObject("replies").optJSONArray("comments") : null;
                     if (repliesArray != null) {
@@ -107,14 +104,18 @@ public class UserServiceImpl implements UserService {
                             reply.setIsTopLevelComment(false);
                             reply.setId(replyObject.getString("id"));
                             reply.setParentId(replySnippet.getString("parentId"));
-                            reply.setAuthorProfileUrl("https://www.youtube.com/" + replyAuthorId);
 
+                            // Намерете родителския коментар и задайте текста му на отговора
                             CommentViewModel parentComment = topLevelComments.get(reply.getParentId());
                             if (parentComment != null) {
+                                reply.setParentCommentText(parentComment.getText());
                                 if (parentComment.getReplies() == null) {
                                     parentComment.setReplies(new ArrayList<>());
                                 }
                                 parentComment.getReplies().add(reply);
+                            } else {
+                                // В случай че родителският коментар не е в topLevelComments
+                                // Може да добавите логика тук ако е необходимо
                             }
 
                             allComments.add(reply);
@@ -159,7 +160,7 @@ public class UserServiceImpl implements UserService {
         return userDetails;
     }
 
-    private static String extractVideoId(String videoUrl) {
+    private String extractVideoId(String videoUrl) {
         String videoId = null;
         if (videoUrl.contains("youtube.com")) {
             String[] urlParts = videoUrl.split("v=");
@@ -174,6 +175,7 @@ public class UserServiceImpl implements UserService {
         }
         return videoId;
     }
+
 
     private String formatDate(String date) {
         LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);

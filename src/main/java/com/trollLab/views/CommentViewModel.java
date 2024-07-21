@@ -179,8 +179,7 @@ public class CommentViewModel {
         return parentCommentText;
     }
 
-    public CommentViewModel setParentCommentText(String parentCommentText) {
+    public void setParentCommentText(String parentCommentText) {
         this.parentCommentText = parentCommentText;
-        return this;
     }
 }

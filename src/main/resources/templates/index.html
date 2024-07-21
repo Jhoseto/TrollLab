@@ -47,9 +47,13 @@
     </script>
 </head>
 <body class="loaded1">
+
 <div class="container">
     <div class="input-container">
         <div class="input-panel">
+            <header>
+                <img src="/images/logo.png" alt="Project Logo"> <!-- Replace "logo.png" with your logo's filename -->
+            </header>
             <h1>Comments Analysis</h1>
             <form action="/comments" method="get">
                 <label for="videoUrl">Video URL:</label>
@@ -57,6 +61,15 @@
                 <button type="submit">Analyze</button>
             </form>
         </div>
+    </div>
+
+    <!-- Video Panel -->
+    <div class="video-panel" th:if="${videoUrl != null}">
+        <iframe
+                src="https://www.youtube.com/embed/{videoId}"
+                th:src="'https://www.youtube.com/embed/' + ${videoId}"
+                allowfullscreen>
+        </iframe>
     </div>
 
     <div class="comments-container">
@@ -84,7 +97,7 @@
                     <div class="comment-content">
                         <div class="comment-author-name">
                             <!-- Form to send a GET request to the controller -->
-                            <form action="/user-details" method="get">
+                            <form action="/user-details" method="get" target="_blank">
                                 <!-- Hidden field with user ID -->
 
                                 <input type="hidden" name="userId" th:value="${comment.authorDisplayName}" />

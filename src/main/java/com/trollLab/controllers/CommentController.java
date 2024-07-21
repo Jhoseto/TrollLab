@@ -37,7 +37,10 @@ public class CommentController {
         boolean hasPrevPage = page > 1;
         boolean hasNextPage = endIndex < allComments.size();
 
+        String videoId = youTubeService.extractVideoId(videoUrl);
+
         model.addAttribute("comments", paginatedComments);
+        model.addAttribute("videoId", videoId);
         model.addAttribute("allComments", allComments);
         model.addAttribute("videoUrl", videoUrl);
         model.addAttribute("currentPage", page);

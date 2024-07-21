@@ -29,10 +29,7 @@ public class UserController {
         // Вземи детайлите на потребителя чрез UserService
         UserDetailsViewModel userDetails = userService.getUserProfile(videoUrl, userId);
 
-        if (userDetails == null) {
-            model.addAttribute("error", "User details could not be retrieved.");
-            return "error"; // Показва грешка, ако не може да се намерят данните
-        }
+
 
         // Добави данните в модела
         model.addAttribute("userProfileImageUrl", userDetails.getProfileImageUrl());

@@ -20,12 +20,13 @@
             background-size: cover, cover, cover;
         }
     </style>
+
 </head>
-<body>
+<body class="loaded1">
 <header>
     <h1>User Details</h1>
     <nav>
-        <a href="/index">Home</a>
+        <a href="/" target="_blank">Home</a>
     </nav>
 </header>
 
@@ -39,29 +40,50 @@
         <p>Total Comments: <span th:text="${totalComments}">Total Comments</span></p>
     </section>
 
-    <!-- List of User's Comments -->
-    <section id="user-comments">
-        <h2>User's Comments</h2>
-        <ul>
-            <li th:each="comment : ${comments}">
-                <p><strong>Date:</strong> <span th:text="${comment.publishedAt}">Date</span></p>
-                <p><strong>Comment:</strong> <span th:text="${comment.text}">Comment</span></p>
-                <p><strong>Likes:</strong> <span th:text="${comment.likeCount}">Likes</span></p>
-            </li>
-        </ul>
+    <!-- User's Main Comments and Replies -->
+    <section id="user-main-comments">
+        <h2>Main Comments and Replies</h2>
+        <div class="comment-section">
+            <ul>
+                <li th:each="comment : ${comments}" class="comment">
+                    <div class="comment-meta">
+                        <span class="comment-date" th:text="${comment.publishedAt}">Date</span>
+                        <span class="comment-likes" th:text="${comment.likeCount} + ' likes'">Likes</span>
+                    </div>
+                    <div class="comment-text" th:utext="${comment.text}">Comment</div>
+                    <!-- Replies -->
+                    <div class="replies" th:if="${comment.replies != null}">
+                        <div th:each="reply : ${comment.replies}" class="reply">
+                            <div class="reply-meta">
+                                <span class="reply-date" th:text="${reply.publishedAt}">Date</span>
+                                <span class="reply-likes" th:text="${reply.likeCount} + ' likes'">Likes</span>
+                            </div>
+                            <div class="reply-text" th:utext="${reply.text}">Reply</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </section>
 
-    <!-- List of User's Replies -->
-    <section id="user-replies">
-        <h2>User's Replies</h2>
-        <ul>
-            <li th:each="reply : ${replies}">
-                <p><strong>Date:</strong> <span th:text="${reply.publishedAt}">Date</span></p>
-                <p><strong>Comment:</strong> <span th:text="${reply.text}">Comment</span></p>
-                <p><strong>Likes:</strong> <span th:text="${reply.likeCount}">Likes</span></p>
-                <p><strong>Replying to:</strong> <span th:text="${reply.parentCommentText}">Parent Comment</span></p>
-            </li>
-        </ul>
+    <!-- User's Replies to Other Users' Comments -->
+    <section id="user-replies-to-others">
+        <h2>Replies to Other Users' Comments</h2>
+        <div class="reply-section">
+            <ul>
+                <li th:each="reply : ${replies}" class="reply">
+                    <div class="parent-comment">
+                        <strong>Replying to:</strong>
+                        <div class="parent-comment-meta" th:utext="${reply.parentCommentText}">Parent Comment</div>
+                    </div>
+                    <div class="reply-text" th:utext="${reply.text}">Reply</div>
+                    <div class="reply-meta">
+                        <span class="reply-date" th:text="${reply.publishedAt}">Date</span>
+                        <span class="reply-likes" th:text="${reply.likeCount} + ' likes'">Likes</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </section>
 </main>
 

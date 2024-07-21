@@ -170,7 +170,7 @@ public class YouTubeServiceImpl implements YouTubeService {
     }
 
 
-    private static String extractVideoId(String videoUrl) {
+    public String extractVideoId(String videoUrl) {
         String videoId = null;
         if (videoUrl.contains("youtube.com")) {
             String[] urlParts = videoUrl.split("v=");

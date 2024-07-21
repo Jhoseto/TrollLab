@@ -1,31 +1,29 @@
-/* Основни стилове за страницата */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #000000;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
-    color: #333;
-    background-color: #f4f4f4;
 }
 
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
+    background-color: #ffffff;
+    color: #ffffff;
+    padding: 20px;
     text-align: center;
+    border-bottom: 1px solid #333;
 }
 
 header h1 {
     margin: 0;
-}
-
-nav {
-    margin-top: 0.5rem;
+    font-size: 2em;
 }
 
 nav a {
-    color: #fff;
     text-decoration: none;
-    margin: 0 1rem;
+    color: #1e90ff;
+    font-weight: bold;
+    margin: 0 10px;
 }
 
 nav a:hover {
@@ -33,47 +31,106 @@ nav a:hover {
 }
 
 main {
-    padding: 2rem;
+    padding: 20px;
     max-width: 900px;
-    margin: auto;
+    margin: 0 auto;
 }
 
-h2 {
-    color: #333;
-}
-
-section {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: #fff;
+#user-info {
+    margin-bottom: 20px;
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-img {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
+    display: block;
+    margin: 0 auto 15px;
+    border: 3px solid #1e90ff;
+}
+
+h2 {
+    border-bottom: 2px solid #1e90ff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 1.5em;
+}
+
+.comment-section, .reply-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-ul li {
-    border-bottom: 1px solid #ddd;
-    padding: 0.5rem 0;
+.comment, .reply {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-ul li p {
-    margin: 0.5rem 0;
+.comment {
+    border-left: 5px solid #1e90ff;
 }
 
-footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #333;
-    color: #fff;
+.reply {
+    border-left: 3px solid #ff4500;
+    margin-bottom: 10px;
+}
+
+.replies {
+    margin-top: 15px;
+    padding-left: 20px;
+    border-left: 2px solid #ddd;
+}
+
+.comment-meta, .reply-meta {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.comment-text, .reply-text {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+strong {
+    font-weight: bold;
+    color: #202020;
+}
+
+.parent-comment {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-left: 5px solid #ddd;
+}
+
+.parent-comment-meta {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.reply-section .parent-comment {
+    border-left: 5px solid #ddd;
+    padding-left: 20px;
+    margin-top: 20px;
 }
