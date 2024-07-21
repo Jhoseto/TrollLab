@@ -1,5 +1,6 @@
 package com.trollLab.services.serviceImpl;
 
+import com.trollLab.services.YouTubeService;
 import com.trollLab.views.CommentViewModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class YouTubeServiceImpl {
+public class YouTubeServiceImpl implements YouTubeService {
 
     @Value("${youtube.api.key}")
     private String apiKey;
@@ -42,7 +43,6 @@ public class YouTubeServiceImpl {
                     (nextPageToken != null && !nextPageToken.isEmpty() ? "&pageToken=" + nextPageToken : "");
 
             String response = restTemplate.getForObject(url, String.class);
-
             try {
                 assert response != null;
                 JSONObject jsonResponse = new JSONObject(response);
@@ -59,6 +59,10 @@ public class YouTubeServiceImpl {
                             snippet.getInt("likeCount"),
                             0 // Инициализиране на общия брой коментари
                     );
+
+                    // Добавяне на допълнителна информация от отговора
+                    comment.setAuthorProfileUrl(snippet.getString("authorChannelUrl"));
+                    comment.setAuthorProfileImageUrl(snippet.getString("authorProfileImageUrl"));
 
                     String commentId = item.getJSONObject("snippet").getJSONObject("topLevelComment").getString("id");
                     comment.setIsTopLevelComment(true);
@@ -79,7 +83,10 @@ public class YouTubeServiceImpl {
                                     replySnippet.getInt("likeCount"),
                                     0 // Инициализиране на общия брой коментари за отговорите
                             );
+
                             reply.setIsTopLevelComment(false);
+                            reply.setAuthorProfileUrl(replySnippet.getString("authorChannelUrl"));
+                            reply.setAuthorProfileImageUrl(replySnippet.getString("authorProfileImageUrl"));
                             replies.add(reply);
 
                             // Запазване на отговорите в commentMap
@@ -120,20 +127,10 @@ public class YouTubeServiceImpl {
             comment.setTotalComments(totalComments);
         });
 
-        // Задаване на URL на профила
-        commentMap.values().forEach(comment -> {
-            String profileUrl = "https://www.youtube.com/" + comment.getAuthorDisplayName();
-            comment.setAuthorProfileUrl(profileUrl);
-        });
-
-        // Преобразуване на стойностите на мапа в списък
+        // Приложете сортиране според избраната опция
         List<CommentViewModel> commentList = new ArrayList<>(commentMap.values());
 
-        // Приложете сортиране според избраната опция
         switch (sort) {
-            case "newest":
-                commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
-                break;
             case "oldest":
                 commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt));
                 break;
@@ -163,7 +160,7 @@ public class YouTubeServiceImpl {
                         .collect(Collectors.toList());
                 commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
                 break;
-
+            case "newest":
             default:
                 commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
                 break;
@@ -172,7 +169,8 @@ public class YouTubeServiceImpl {
         return commentList;
     }
 
-    private String extractVideoId(String videoUrl) {
+
+    private static String extractVideoId(String videoUrl) {
         String videoId = null;
         if (videoUrl.contains("youtube.com")) {
             String[] urlParts = videoUrl.split("v=");

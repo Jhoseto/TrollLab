@@ -6,6 +6,7 @@ public class CommentViewModel {
     private String id;
     private String text;
     private String authorDisplayName;
+    private String authorProfileImageUrl;
     private String publishedAt;
     private int likeCount;
     private String channelId;
@@ -17,6 +18,8 @@ public class CommentViewModel {
     private int totalComments;
     private String authorProfileUrl;
     private boolean isTopLevelComment;
+    private String parentId; // Добавено поле за ID на родителския коментар
+    private String parentCommentText;
 
     public CommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount, int totalComments) {
         this.text = text;
@@ -25,6 +28,8 @@ public class CommentViewModel {
         this.likeCount = likeCount;
         this.totalComments = totalComments;
     }
+
+    // Гетъри и сетъри
 
     public String getId() {
         return id;
@@ -50,6 +55,15 @@ public class CommentViewModel {
 
     public CommentViewModel setAuthorDisplayName(String authorDisplayName) {
         this.authorDisplayName = authorDisplayName;
+        return this;
+    }
+
+    public String getAuthorProfileImageUrl() {
+        return authorProfileImageUrl;
+    }
+
+    public CommentViewModel setAuthorProfileImageUrl(String authorProfileImageUrl) {
+        this.authorProfileImageUrl = authorProfileImageUrl;
         return this;
     }
 
@@ -147,7 +161,26 @@ public class CommentViewModel {
         return isTopLevelComment;
     }
 
-    public void setIsTopLevelComment(boolean isTopLevelComment) {
+    public CommentViewModel setIsTopLevelComment(boolean isTopLevelComment) {
         this.isTopLevelComment = isTopLevelComment;
+        return this;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public CommentViewModel setParentId(String parentId) {
+        this.parentId = parentId;
+        return this;
+    }
+
+    public String getParentCommentText() {
+        return parentCommentText;
+    }
+
+    public CommentViewModel setParentCommentText(String parentCommentText) {
+        this.parentCommentText = parentCommentText;
+        return this;
     }
 }

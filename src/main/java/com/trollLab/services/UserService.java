@@ -2,7 +2,9 @@ package com.trollLab.services;
 
 import com.trollLab.views.UserDetailsViewModel;
 
+import java.util.List;
+
 public interface UserService {
 
-    UserDetailsViewModel getUserDetails(String userId);
+    UserDetailsViewModel getUserProfile(String videoUrl, String userId);
 }

@@ -10,6 +10,17 @@ public class UserDetailsViewModel {
     private List<CommentViewModel> comments;
     private List<CommentViewModel> replies;
 
+    public UserDetailsViewModel() {
+        // Празен конструктор за десериализация
+    }
+
+    public UserDetailsViewModel(String name, String profileUrl, String profileImageUrl, int totalComments) {
+        this.name = name;
+        this.profileUrl = profileUrl;
+        this.profileImageUrl = profileImageUrl;
+        this.totalComments = totalComments;
+    }
+
     public String getProfileImageUrl() {
         return profileImageUrl;
     }

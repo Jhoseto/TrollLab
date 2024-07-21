@@ -83,11 +83,12 @@
                 <div th:each="comment : ${comments}" class="comment">
                     <div class="comment-content">
                         <div class="comment-author-name">
-                            <!-- Форма за изпращане на POST заявка към контролера -->
-                            <form action="/user-details"
-                                  method="post">
-                                <!-- Скрито поле с информация за името на потребителя -->
+                            <!-- Form to send a GET request to the controller -->
+                            <form action="/user-details" method="get">
+                                <!-- Hidden field with user ID -->
+
                                 <input type="hidden" name="userId" th:value="${comment.authorDisplayName}" />
+                                <input type="hidden" name="videoUrl" th:value="${videoUrl}" />
                                 <button type="submit" class="btn btn-link" th:text="${comment.authorDisplayName}">Author Name</button>
                             </form>
                             <span th:text="' (' + ${comment.totalComments} + ' comments)'"></span>

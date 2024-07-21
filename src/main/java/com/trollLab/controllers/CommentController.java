@@ -1,5 +1,6 @@
 package com.trollLab.controllers;
 
+import com.trollLab.services.YouTubeService;
 import com.trollLab.views.CommentViewModel;
 import com.trollLab.services.serviceImpl.YouTubeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
 @Controller
 public class CommentController {
 
-    private final YouTubeServiceImpl youTubeService;
+    private final YouTubeService youTubeService;
 
     @Autowired
     public CommentController(YouTubeServiceImpl youTubeService) {
