@@ -5,46 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trolls Analysis</title>
     <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/scripts.js" defer></script> <!-- Link to your JavaScript file -->
     <style>
         body {
-            background: url('/images/troll2.png') no-repeat center top;
+            background: url('/static/images/troll4.jpg') repeat center top;
             background-size: cover;
             transition: background 1s ease-in-out;
         }
 
         body.loaded1 {
             background:
-                    url('/images/troll3.png') no-repeat center top,
-                    url('/images/troll2.png') no-repeat center center,
-                    url('/images/troll3.png') no-repeat center bottom;
+                    url('/images/troll1.jpg') no-repeat center top,
+                    url('/images/troll2.jpg') no-repeat center center,
+                    url('/images/troll3.jpg') no-repeat center bottom;
             background-size: cover, cover, cover;
         }
-
-
+        .highlight {
+            color: #eeeeee;
+            background-color: #542eff;
+            font-weight: bold;
+        }
     </style>
-    <script>
-        function sortBySelectedOption() {
-            var selectBox = document.getElementById("sort");
-            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-            var currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set("sort", selectedValue);
-            window.location.replace(currentUrl.toString());
-        }
-
-        function setSelectedOption() {
-            var sortParam = new URLSearchParams(window.location.search).get("sort");
-            if (sortParam) {
-                document.getElementById("sort").value = sortParam;
-            }
-        }
-
-        window.onload = function() {
-            setSelectedOption();
-
-            // Add 'loaded1' class to the body
-            document.body.classList.add('loaded1');
-        }
-    </script>
 </head>
 <body class="loaded1">
 
@@ -52,12 +33,17 @@
     <div class="input-container">
         <div class="input-panel">
             <header>
-                <img src="/images/logo.png" alt="Project Logo"> <!-- Replace "logo.png" with your logo's filename -->
+                <img src="/images/logo.png" alt="Project Logo">
             </header>
             <h1>Comments Analysis</h1>
             <form action="/comments" method="get">
-                <label for="videoUrl">Video URL:</label>
+                <label for="videoUrl">Paste here YouTube Video URL :</label>
                 <input type="text" id="videoUrl" name="videoUrl" th:value="${videoUrl}">
+                <button type="submit">Analyze</button>
+            </form>
+            <form action="/liveComments" method="get">
+                <label for="liveVideoUrl">Paste here YouTube LIVE Video URL :</label>
+                <input type="text" id="liveVideoUrl" name="liveVideoUrl" th:value="${liveVideoUrl}">
                 <button type="submit">Analyze</button>
             </form>
         </div>
@@ -75,16 +61,26 @@
     <div class="comments-container">
         <div th:if="${comments != null}" class="comments-panel">
             <h2>Total comments: <span th:text="${allComments.size()}"></span></h2>
-
-            <label for="sort">Sort by:</label>
-            <select id="sort" name="sort" onchange="sortBySelectedOption()">
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="only-replied">Only Replayed Comments</option>
-                <option value="most-liked">Most Liked Troll</option>
-                <option value="most-comments">Most Comments Troll</option>
-            </select>
-
+            <div class="sorting-live-form-container" style="display: flex; ">
+                <div class="sort-form" style="margin-top: 35px">
+                    <label for="sort">Sort by:</label>
+                    <select id="sort" name="sort" onchange="sortBySelectedOption()">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="only-replied">Only Replied Comments</option>
+                        <option value="most-liked">Most Liked Troll</option>
+                        <option value="most-comments">Most Comments Troll</option>
+                    </select>
+                </div>
+                <div class="search-form" style="margin-left: 80px">
+                    <form action="/searchByWord" method="get" class="search-comments-form">
+                        <label for="searchingWord">Search by word:</label>
+                        <input type="hidden" name="videoUrl" th:value="${videoUrl}">
+                        <input type="text" id="searchingWord" name="words" th:value="${words}" autocomplete="off">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
             <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
                 <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
                 <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=${currentPage - 1}, sort=${sort})}">Previous Page</a>
@@ -96,10 +92,7 @@
                 <div th:each="comment : ${comments}" class="comment">
                     <div class="comment-content">
                         <div class="comment-author-name">
-                            <!-- Form to send a GET request to the controller -->
                             <form action="/user-details" method="get" target="_blank">
-                                <!-- Hidden field with user ID -->
-
                                 <input type="hidden" name="userId" th:value="${comment.authorDisplayName}" />
                                 <input type="hidden" name="videoUrl" th:value="${videoUrl}" />
                                 <button type="submit" class="btn btn-link" th:text="${comment.authorDisplayName}">Author Name</button>
@@ -112,7 +105,6 @@
                             <span class="comment-likes" th:text="${comment.likeCount} + ' likes'"></span>
                         </div>
                     </div>
-                    <!-- Show replies if available -->
                     <div th:if="${comment.replies != null}" class="reply-container">
                         <div th:each="reply : ${comment.replies}" class="reply">
                             <div class="comment-author-name">

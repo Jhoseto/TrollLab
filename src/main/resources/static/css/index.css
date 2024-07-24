@@ -5,11 +5,12 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column; /* Подравняваме панелите вертикално */
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0; /* По-светъл фон за цялата страница */
+    background-color: #f0f0f0;
 }
+
 header {
     max-width: 850px;
     min-width: 850px;
@@ -18,15 +19,16 @@ header {
 }
 
 header img {
-    height: 250px; /* Adjust the height as needed */
+    height: 250px;
 }
+
 /* Контейнери */
 .input-container, .comments-container, .video-panel {
-    width: 100%; /* Широчина на 100% от родителския елемент */
+    width: 100%;
     max-width: 900px;
     min-width: 900px;
-    margin: 20px 0; /* Добавяме малко разстояние между панелите */
-    box-sizing: border-box; /* Включва padding и border в ширината на елемента */
+    margin: 20px 0;
+    box-sizing: border-box;
 }
 
 /* Стилове за панелите */
@@ -35,13 +37,12 @@ header img {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* По-силен shadow */
-    box-sizing: border-box; /* Включва padding и border в ширината на панела */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 /* Заглавия */
 h1 {
-    position: static;
     color: #555;
     margin-bottom: 20px;
     align-items: center;
@@ -61,7 +62,7 @@ input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: calc(100% - 120px); /* Адаптирано за да остави място за бутона */
+    width: calc(100% - 120px);
     margin-bottom: 10px;
 }
 
@@ -162,10 +163,25 @@ button:hover {
 }
 
 .video-panel iframe {
-    width: 100%; /* Широчината на iframe да бъде 100% от родителския елемент */
-    max-width: 900px; /* Максимална ширина на iframe, съвпадаща с максималната ширина на панелите */
-    height: 500px; /* Височина на видеото */
-    border-radius: 8px; /* Заоблени ъгли */
-    border: none; /* Премахване на борда около iframe */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* По-силен shadow */
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
+
+/* Нови стилове за контейнера с формулярите */
+.sorting-live-form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.sort-form, .search-form {
+    display: flex;
+    align-items: center;
+}
+

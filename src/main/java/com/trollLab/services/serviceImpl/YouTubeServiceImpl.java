@@ -193,4 +193,27 @@ public class YouTubeServiceImpl implements YouTubeService {
         ZonedDateTime adjustedTime = zonedDateTime.plusHours(3);
         return adjustedTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
+
+
+    @Override
+    public List<CommentViewModel> getCommentsBySearchingWords(String videoUrl, String pageToken, String sort, String words) {
+        List<CommentViewModel> allComments = getComments(videoUrl, pageToken, sort);
+        String[] allWords = words.split("\\s+");
+
+        List<CommentViewModel> filteredComments = allComments.stream()
+                .filter(comment -> {
+                    for (String word : allWords) {
+                        if (comment.getText().contains(word)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
+        return filteredComments;
+    }
+
+
+
 }
