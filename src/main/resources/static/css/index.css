@@ -250,7 +250,7 @@ button:hover {
 
 /* Стилове за интро текста */
 .intro-text {
-    max-width: 800px;
+    max-width: 830px;
     margin: 2rem auto;
     padding: 2rem;
     background-color: rgba(0, 0, 0, 0.53); /* Запазваме фона по съществуващия */
@@ -280,7 +280,9 @@ button:hover {
 .intro-text p:last-child {
     margin-bottom: 0;
 }
-
+.intro-text.hidden {
+    display: none; /* Напълно скрива елемента и не оставя място */
+}
 
 
 

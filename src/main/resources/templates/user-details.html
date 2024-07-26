@@ -73,7 +73,8 @@
             <ul>
                 <li th:each="reply : ${replies}" class="reply">
                     <div class="parent-comment">
-                        <strong>Replying to:</strong>
+                        <strong>Replying to: <span th:text="${reply.authorDisplayName}"></span></strong>
+
                         <div class="parent-comment-meta" th:utext="${reply.parentCommentText}">Parent Comment</div>
                     </div>
                     <div class="reply-text" th:utext="${reply.text}">Reply</div>
