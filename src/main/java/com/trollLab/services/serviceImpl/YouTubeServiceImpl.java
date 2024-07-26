@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -197,19 +199,35 @@ public class YouTubeServiceImpl implements YouTubeService {
 
     public String extractVideoId(String videoUrl) {
         String videoId = null;
-        if (videoUrl.contains("youtube.com")) {
-            String[] urlParts = videoUrl.split("v=");
-            if (urlParts.length > 1) {
-                videoId = urlParts[1].split("&")[0];
+
+        try {
+            URL url = new URL(videoUrl);
+            String host = url.getHost();
+            String query = url.getQuery();
+
+            // Check for standard YouTube URLs
+            if (host.contains("youtube.com") && query != null) {
+                String[] queryParams = query.split("&");
+                for (String param : queryParams) {
+                    if (param.startsWith("v=")) {
+                        videoId = param.split("=")[1];
+                        break;
+                    }
+                }
             }
-        } else if (videoUrl.contains("youtu.be")) {
-            String[] urlParts = videoUrl.split("/");
-            if (urlParts.length > 1) {
-                videoId = urlParts[urlParts.length - 1];
+            // Check for shortened YouTube URLs
+            else if (host.contains("youtu.be")) {
+                String[] pathSegments = url.getPath().split("/");
+                if (pathSegments.length > 1) {
+                    videoId = pathSegments[1];
+                }
             }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
         return videoId;
     }
+
 
 
     private String formatDate(String date) {

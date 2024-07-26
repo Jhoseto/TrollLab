@@ -33,7 +33,6 @@ public class UserController {
         UserDetailsViewModel userDetails = userService.getUserProfile(videoUrl, userId);
 
 
-
         // Добави данните в модела
         model.addAttribute("userProfileImageUrl", userDetails.getProfileImageUrl());
         model.addAttribute("userName", userDetails.getName());

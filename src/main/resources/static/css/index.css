@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;400&display=swap');
+
 /* Основни стилове за body */
 body {
     font-family: Arial, sans-serif;
@@ -204,3 +206,95 @@ button:hover {
     background-color: #fdd;
 }
 
+/* Медиазапитвания за мобилна версия */
+@media (max-width: 900px) {
+    header {
+        max-width: 100%;
+        min-width: auto;
+    }
+
+    .input-container, .comments-container, .video-panel {
+        max-width: 100%;
+        min-width: auto;
+        margin: 10px;
+    }
+
+    .input-panel, .comments-panel, .video-panel {
+        padding: 15px;
+    }
+
+    input[type="text"] {
+        width: calc(100% - 100px);
+    }
+
+    .sorting-live-form-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .search-form {
+        margin-left: 0;
+    }
+
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination a, .pagination span {
+        margin: 5px 0;
+    }
+}
+
+/* Добавяне на Google Fonts */
+
+/* Стилове за интро текста */
+.intro-text {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.53); /* Запазваме фона по съществуващия */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Open Sans', sans-serif; /* Основен шрифт */
+}
+
+.intro-text h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-family: 'Lora', serif; /* Шрифт за заглавията */
+    font-weight: 700; /* По-голяма дебелина на заглавията */
+}
+
+.intro-text p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-family: 'Open Sans', sans-serif; /* Основен шрифт за текста */
+    font-weight: 300; /* Тънък шрифт */
+}
+
+.intro-text p:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
+/* Responsive Styles for intro-text */
+@media (max-width: 600px) {
+    .intro-text {
+        padding: 1rem;
+    }
+
+    .intro-text h1 {
+        font-size: 2rem;
+    }
+
+    .intro-text p {
+        font-size: 1rem;
+    }
+}

@@ -15,7 +15,7 @@
 
         body.loaded1 {
             background:
-                    url('/images/troll1.jpg') no-repeat center top,
+                    url('/images/troll4.jpg') no-repeat center top,
                     url('/images/troll2.jpg') no-repeat center center,
                     url('/images/troll3.jpg') no-repeat center bottom;
             background-size: cover, cover, cover;
@@ -48,6 +48,9 @@
          th:if="${error}">
         <p th:text="${error}"></p>
     </div>
+
+    <div th:replace="fragments/intro-text :: #introText"></div>
+
     <!-- Video Panel -->
     <div class="video-panel" th:if="${videoUrl != null}">
         <iframe
@@ -138,15 +141,6 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var errorElement = document.querySelector(".user-not-found");
-        if (errorElement) {
-            setTimeout(function() {
-                errorElement.style.display = "none";
-            }, 7000);
-        }
-    });
-</script>
+
 </body>
 </html>
