@@ -20,6 +20,7 @@
                     url('/images/troll3.jpg') no-repeat center bottom;
             background-size: cover, cover, cover;
         }
+
         .highlight {
             color: #eeeeee;
             background-color: #542eff;
@@ -41,14 +42,12 @@
                 <input type="text" id="videoUrl" name="videoUrl" th:value="${videoUrl}">
                 <button type="submit">Analyze</button>
             </form>
-            <form action="/liveComments" method="get">
-                <label for="liveVideoUrl">Paste here YouTube LIVE Video URL :</label>
-                <input type="text" id="liveVideoUrl" name="liveVideoUrl" th:value="${liveVideoUrl}">
-                <button type="submit">Analyze</button>
-            </form>
         </div>
     </div>
-
+    <div class="user-not-found"
+         th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
     <!-- Video Panel -->
     <div class="video-panel" th:if="${videoUrl != null}">
         <iframe
@@ -79,7 +78,17 @@
                         <input type="text" id="searchingWord" name="words" th:value="${words}" autocomplete="off">
                         <button type="submit">Search</button>
                     </form>
+                    <form action="/searchByUser" method="get" class="search-comments-form">
+                        <label for="searchingWord">Search by Username:</label>
+                        <input type="hidden" name="videoUrl" th:value="${videoUrl}">
+                        <input type="text" id="searchingUser" name="userId" th:value="${userId}" autocomplete="off">
+                        <button type="submit">Search</button>
+                    </form>
                 </div>
+            </div>
+            <div class="user-not-found"
+                 th:if="${error}">
+                <p th:text="${error}"></p>
             </div>
             <div class="pagination" th:if="${hasPrevPage || hasNextPage}">
                 <a th:if="${hasPrevPage}" th:href="@{/comments(videoUrl=${videoUrl}, page=1, sort=${sort})}">First Page</a>
@@ -129,5 +138,15 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var errorElement = document.querySelector(".user-not-found");
+        if (errorElement) {
+            setTimeout(function() {
+                errorElement.style.display = "none";
+            }, 7000);
+        }
+    });
+</script>
 </body>
 </html>

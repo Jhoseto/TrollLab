@@ -2,7 +2,6 @@ package com.trollLab.controllers;
 
 import com.trollLab.services.YouTubeService;
 import com.trollLab.views.CommentViewModel;
-import com.trollLab.services.serviceImpl.YouTubeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +16,7 @@ public class CommentController {
     private final YouTubeService youTubeService;
 
     @Autowired
-    public CommentController(YouTubeServiceImpl youTubeService) {
+    public CommentController(YouTubeService youTubeService) {
         this.youTubeService = youTubeService;
     }
 
@@ -47,6 +46,7 @@ public class CommentController {
         model.addAttribute("hasPrevPage", hasPrevPage);
         model.addAttribute("hasNextPage", hasNextPage);
 
+        System.out.println("USE for link:"+videoUrl);
         return "index";
     }
 
@@ -79,4 +79,5 @@ public class CommentController {
 
         return "index";
     }
+
 }
