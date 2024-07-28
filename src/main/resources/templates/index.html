@@ -141,6 +141,17 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const commentsPanel = document.querySelector('.comments-panel');
+        const introText = document.getElementById('introText');
+
+        if (commentsPanel && introText) {
+            introText.style.display = 'none'; // Скрива въвеждащия текст
+        }
+    });
+
+</script>
 
 </body>
 </html>
