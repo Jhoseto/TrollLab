@@ -7,8 +7,8 @@ public class UserDetailsViewModel {
     private String name;
     private String profileUrl;
     private int totalComments;
-    private List<CommentViewModel> comments;
-    private List<CommentViewModel> replies;
+    private List<YouTubeCommentViewModel> comments;
+    private List<YouTubeCommentViewModel> replies;
 
     public UserDetailsViewModel() {
         // Празен конструктор за десериализация
@@ -57,20 +57,20 @@ public class UserDetailsViewModel {
         return this;
     }
 
-    public List<CommentViewModel> getComments() {
+    public List<YouTubeCommentViewModel> getComments() {
         return comments;
     }
 
-    public UserDetailsViewModel setComments(List<CommentViewModel> comments) {
+    public UserDetailsViewModel setComments(List<YouTubeCommentViewModel> comments) {
         this.comments = comments;
         return this;
     }
 
-    public List<CommentViewModel> getReplies() {
+    public List<YouTubeCommentViewModel> getReplies() {
         return replies;
     }
 
-    public UserDetailsViewModel setReplies(List<CommentViewModel> replies) {
+    public UserDetailsViewModel setReplies(List<YouTubeCommentViewModel> replies) {
         this.replies = replies;
         return this;
     }

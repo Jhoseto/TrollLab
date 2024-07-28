@@ -2,7 +2,7 @@ package com.trollLab.views;
 
 import java.util.List;
 
-public class CommentViewModel {
+public class YouTubeCommentViewModel {
     private String id;
     private String text;
     private String authorDisplayName;
@@ -14,14 +14,14 @@ public class CommentViewModel {
     private boolean canReply;
     private int totalReplyCount;
     private boolean isPublic;
-    private List<CommentViewModel> replies;
+    private List<YouTubeCommentViewModel> replies;
     private int totalComments;
     private String authorProfileUrl;
     private boolean isTopLevelComment;
     private String parentId; // Добавено поле за ID на родителския коментар
     private String parentCommentText;
 
-    public CommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount, int totalComments) {
+    public YouTubeCommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount, int totalComments) {
         this.text = text;
         this.authorDisplayName = authorDisplayName;
         this.publishedAt = publishedAt;
@@ -35,7 +35,7 @@ public class CommentViewModel {
         return id;
     }
 
-    public CommentViewModel setId(String id) {
+    public YouTubeCommentViewModel setId(String id) {
         this.id = id;
         return this;
     }
@@ -44,7 +44,7 @@ public class CommentViewModel {
         return text;
     }
 
-    public CommentViewModel setText(String text) {
+    public YouTubeCommentViewModel setText(String text) {
         this.text = text;
         return this;
     }
@@ -53,7 +53,7 @@ public class CommentViewModel {
         return authorDisplayName;
     }
 
-    public CommentViewModel setAuthorDisplayName(String authorDisplayName) {
+    public YouTubeCommentViewModel setAuthorDisplayName(String authorDisplayName) {
         this.authorDisplayName = authorDisplayName;
         return this;
     }
@@ -62,7 +62,7 @@ public class CommentViewModel {
         return authorProfileImageUrl;
     }
 
-    public CommentViewModel setAuthorProfileImageUrl(String authorProfileImageUrl) {
+    public YouTubeCommentViewModel setAuthorProfileImageUrl(String authorProfileImageUrl) {
         this.authorProfileImageUrl = authorProfileImageUrl;
         return this;
     }
@@ -71,7 +71,7 @@ public class CommentViewModel {
         return publishedAt;
     }
 
-    public CommentViewModel setPublishedAt(String publishedAt) {
+    public YouTubeCommentViewModel setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
         return this;
     }
@@ -80,7 +80,7 @@ public class CommentViewModel {
         return likeCount;
     }
 
-    public CommentViewModel setLikeCount(int likeCount) {
+    public YouTubeCommentViewModel setLikeCount(int likeCount) {
         this.likeCount = likeCount;
         return this;
     }
@@ -89,7 +89,7 @@ public class CommentViewModel {
         return channelId;
     }
 
-    public CommentViewModel setChannelId(String channelId) {
+    public YouTubeCommentViewModel setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
     }
@@ -98,7 +98,7 @@ public class CommentViewModel {
         return videoId;
     }
 
-    public CommentViewModel setVideoId(String videoId) {
+    public YouTubeCommentViewModel setVideoId(String videoId) {
         this.videoId = videoId;
         return this;
     }
@@ -107,7 +107,7 @@ public class CommentViewModel {
         return canReply;
     }
 
-    public CommentViewModel setCanReply(boolean canReply) {
+    public YouTubeCommentViewModel setCanReply(boolean canReply) {
         this.canReply = canReply;
         return this;
     }
@@ -116,7 +116,7 @@ public class CommentViewModel {
         return totalReplyCount;
     }
 
-    public CommentViewModel setTotalReplyCount(int totalReplyCount) {
+    public YouTubeCommentViewModel setTotalReplyCount(int totalReplyCount) {
         this.totalReplyCount = totalReplyCount;
         return this;
     }
@@ -125,16 +125,16 @@ public class CommentViewModel {
         return isPublic;
     }
 
-    public CommentViewModel setPublic(boolean aPublic) {
+    public YouTubeCommentViewModel setPublic(boolean aPublic) {
         isPublic = aPublic;
         return this;
     }
 
-    public List<CommentViewModel> getReplies() {
+    public List<YouTubeCommentViewModel> getReplies() {
         return replies;
     }
 
-    public CommentViewModel setReplies(List<CommentViewModel> replies) {
+    public YouTubeCommentViewModel setReplies(List<YouTubeCommentViewModel> replies) {
         this.replies = replies;
         return this;
     }
@@ -143,7 +143,7 @@ public class CommentViewModel {
         return totalComments;
     }
 
-    public CommentViewModel setTotalComments(int totalComments) {
+    public YouTubeCommentViewModel setTotalComments(int totalComments) {
         this.totalComments = totalComments;
         return this;
     }
@@ -152,7 +152,7 @@ public class CommentViewModel {
         return authorProfileUrl;
     }
 
-    public CommentViewModel setAuthorProfileUrl(String authorProfileUrl) {
+    public YouTubeCommentViewModel setAuthorProfileUrl(String authorProfileUrl) {
         this.authorProfileUrl = authorProfileUrl;
         return this;
     }
@@ -161,7 +161,7 @@ public class CommentViewModel {
         return isTopLevelComment;
     }
 
-    public CommentViewModel setIsTopLevelComment(boolean isTopLevelComment) {
+    public YouTubeCommentViewModel setIsTopLevelComment(boolean isTopLevelComment) {
         this.isTopLevelComment = isTopLevelComment;
         return this;
     }
@@ -170,7 +170,7 @@ public class CommentViewModel {
         return parentId;
     }
 
-    public CommentViewModel setParentId(String parentId) {
+    public YouTubeCommentViewModel setParentId(String parentId) {
         this.parentId = parentId;
         return this;
     }

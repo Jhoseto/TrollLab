@@ -1,7 +1,7 @@
 package com.trollLab.services.serviceImpl;
 
 import com.trollLab.services.YouTubeService;
-import com.trollLab.views.CommentViewModel;
+import com.trollLab.views.YouTubeCommentViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -39,14 +39,14 @@ public class YouTubeServiceImpl implements YouTubeService {
 
 
     @Override
-    public List<CommentViewModel> getComments(String videoUrl, String pageToken, String sort) {
+    public List<YouTubeCommentViewModel> getComments(String videoUrl, String pageToken, String sort) {
         String videoId = extractVideoId(videoUrl);
         if (videoId == null) {
             throw new IllegalArgumentException("Invalid YouTube video URL: " + videoUrl);
         }
 
-        List<CommentViewModel> allComments = new ArrayList<>();
-        Map<String, CommentViewModel> commentMap = new HashMap<>();
+        List<YouTubeCommentViewModel> allComments = new ArrayList<>();
+        Map<String, YouTubeCommentViewModel> commentMap = new HashMap<>();
         String nextPageToken = pageToken;
 
         do {
@@ -67,7 +67,7 @@ public class YouTubeServiceImpl implements YouTubeService {
                     JSONObject item = items.getJSONObject(i);
                     JSONObject snippet = item.getJSONObject("snippet").getJSONObject("topLevelComment").getJSONObject("snippet");
 
-                    CommentViewModel comment = new CommentViewModel(
+                    YouTubeCommentViewModel comment = new YouTubeCommentViewModel(
                             snippet.getString("textDisplay"),
                             snippet.getString("authorDisplayName"),
                             formatDate(snippet.getString("publishedAt")),
@@ -84,12 +84,12 @@ public class YouTubeServiceImpl implements YouTubeService {
 
                     JSONArray repliesArray = item.optJSONObject("replies") != null ? item.optJSONObject("replies").optJSONArray("comments") : null;
                     if (repliesArray != null) {
-                        List<CommentViewModel> replies = new ArrayList<>();
+                        List<YouTubeCommentViewModel> replies = new ArrayList<>();
                         for (int j = 0; j < repliesArray.length(); j++) {
                             JSONObject replyObject = repliesArray.getJSONObject(j);
                             JSONObject replySnippet = replyObject.getJSONObject("snippet");
 
-                            CommentViewModel reply = new CommentViewModel(
+                            YouTubeCommentViewModel reply = new YouTubeCommentViewModel(
                                     replySnippet.getString("textDisplay"),
                                     replySnippet.getString("authorDisplayName"),
                                     formatDate(replySnippet.getString("publishedAt")),
@@ -120,12 +120,12 @@ public class YouTubeServiceImpl implements YouTubeService {
 
         Map<String, Integer> userCommentCount = new HashMap<>();
 
-        for (CommentViewModel comment : commentMap.values()) {
+        for (YouTubeCommentViewModel comment : commentMap.values()) {
             String author = comment.getAuthorDisplayName();
             userCommentCount.put(author, userCommentCount.getOrDefault(author, 0) + 1);
 
             if (comment.getReplies() != null) {
-                for (CommentViewModel reply : comment.getReplies()) {
+                for (YouTubeCommentViewModel reply : comment.getReplies()) {
                     userCommentCount.put(reply.getAuthorDisplayName(), userCommentCount.getOrDefault(reply.getAuthorDisplayName(), 0) + 1);
                 }
             }
@@ -136,14 +136,14 @@ public class YouTubeServiceImpl implements YouTubeService {
             comment.setTotalComments(totalComments);
         });
 
-        List<CommentViewModel> commentList = new ArrayList<>(commentMap.values());
+        List<YouTubeCommentViewModel> commentList = new ArrayList<>(commentMap.values());
 
         switch (sort) {
             case "oldest":
-                commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt));
+                commentList.sort(Comparator.comparing(YouTubeCommentViewModel::getPublishedAt));
                 break;
             case "most-liked":
-                commentList.sort(Comparator.comparingInt(CommentViewModel::getLikeCount).reversed());
+                commentList.sort(Comparator.comparingInt(YouTubeCommentViewModel::getLikeCount).reversed());
                 break;
             case "most-comments":
                 commentList.sort((c1, c2) -> {
@@ -152,8 +152,8 @@ public class YouTubeServiceImpl implements YouTubeService {
                     return Integer.compare(count2, count1);
                 });
 
-                List<CommentViewModel> sortedCommentsWithReplies = new ArrayList<>();
-                for (CommentViewModel comment : commentList) {
+                List<YouTubeCommentViewModel> sortedCommentsWithReplies = new ArrayList<>();
+                for (YouTubeCommentViewModel comment : commentList) {
                     sortedCommentsWithReplies.add(comment);
                     if (comment.getReplies() != null) {
                         sortedCommentsWithReplies.addAll(comment.getReplies());
@@ -165,11 +165,11 @@ public class YouTubeServiceImpl implements YouTubeService {
                 commentList = commentList.stream()
                         .filter(comment -> comment.getReplies() != null && !comment.getReplies().isEmpty())
                         .collect(Collectors.toList());
-                commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
+                commentList.sort(Comparator.comparing(YouTubeCommentViewModel::getPublishedAt).reversed());
                 break;
             case "newest":
             default:
-                commentList.sort(Comparator.comparing(CommentViewModel::getPublishedAt).reversed());
+                commentList.sort(Comparator.comparing(YouTubeCommentViewModel::getPublishedAt).reversed());
                 break;
         }
 
@@ -177,11 +177,11 @@ public class YouTubeServiceImpl implements YouTubeService {
     }
 
     @Override
-    public List<CommentViewModel> getCommentsBySearchingWords(String videoUrl, String pageToken, String sort, String words) {
-        List<CommentViewModel> allComments = getComments(videoUrl, pageToken, sort);
+    public List<YouTubeCommentViewModel> getCommentsBySearchingWords(String videoUrl, String pageToken, String sort, String words) {
+        List<YouTubeCommentViewModel> allComments = getComments(videoUrl, pageToken, sort);
         String[] allWords = words.split("\\s+");
 
-        List<CommentViewModel> filteredComments = allComments.stream()
+        List<YouTubeCommentViewModel> filteredComments = allComments.stream()
                 .filter(comment -> {
                     for (String word : allWords) {
                         if (comment.getText().contains(word)) {

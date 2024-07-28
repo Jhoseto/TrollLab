@@ -1,7 +1,7 @@
 package com.trollLab.services.serviceImpl;
 
 import com.trollLab.services.UserService;
-import com.trollLab.views.CommentViewModel;
+import com.trollLab.views.YouTubeCommentViewModel;
 import com.trollLab.views.UserDetailsViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsViewModel getUserProfile(String videoUrl, String userId) {
-        List<CommentViewModel> allComments = new ArrayList<>();
-        Map<String, CommentViewModel> topLevelComments = new HashMap<>();
+        List<YouTubeCommentViewModel> allComments = new ArrayList<>();
+        Map<String, YouTubeCommentViewModel> topLevelComments = new HashMap<>();
 
         String videoId = extractVideoId(videoUrl);
         if (videoId == null) {
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
                     JSONObject item = items.getJSONObject(i);
                     JSONObject snippet = item.getJSONObject("snippet").getJSONObject("topLevelComment").getJSONObject("snippet");
 
-                    CommentViewModel comment = new CommentViewModel(
+                    YouTubeCommentViewModel comment = new YouTubeCommentViewModel(
                             snippet.getString("textDisplay"),
                             snippet.getString("authorDisplayName"),
                             formatDate(snippet.getString("publishedAt")),
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
                             String replyAuthorId = replySnippet.getString("authorDisplayName");
 
-                            CommentViewModel reply = new CommentViewModel(
+                            YouTubeCommentViewModel reply = new YouTubeCommentViewModel(
                                     replySnippet.getString("textDisplay"),
                                     replySnippet.getString("authorDisplayName"),
                                     formatDate(replySnippet.getString("publishedAt")),
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
                             reply.setParentId(replySnippet.getString("parentId"));
 
                             // Намерете родителския коментар и задайте текста му на отговора
-                            CommentViewModel parentComment = topLevelComments.get(reply.getParentId());
+                            YouTubeCommentViewModel parentComment = topLevelComments.get(reply.getParentId());
                             if (parentComment != null) {
                                 reply.setParentCommentText(parentComment.getText());
                                 if (parentComment.getReplies() == null) {
@@ -133,10 +133,10 @@ public class UserServiceImpl implements UserService {
         } while (nextPageToken != null);
 
         UserDetailsViewModel userDetails = new UserDetailsViewModel();
-        List<CommentViewModel> userComments = new ArrayList<>();
-        List<CommentViewModel> userReplies = new ArrayList<>();
+        List<YouTubeCommentViewModel> userComments = new ArrayList<>();
+        List<YouTubeCommentViewModel> userReplies = new ArrayList<>();
 
-        for (CommentViewModel comment : allComments) {
+        for (YouTubeCommentViewModel comment : allComments) {
             if (comment.getAuthorDisplayName().equals(userId)) {
                 if (comment.isTopLevelComment()) {
                     userComments.add(comment);
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!userComments.isEmpty()) {
-            CommentViewModel firstComment = userComments.get(0);
+            YouTubeCommentViewModel firstComment = userComments.get(0);
             userDetails.setProfileImageUrl(firstComment.getAuthorProfileImageUrl());
             userDetails.setName(firstComment.getAuthorDisplayName());
             userDetails.setProfileUrl(firstComment.getAuthorProfileUrl());

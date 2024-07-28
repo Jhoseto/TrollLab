@@ -8,20 +8,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @Controller
 public class UserController {
 
     private final UserService userService;
-    private final CommentController commentController;
+    private final YoutubeController youtubeController;
 
 
     @Autowired
     public UserController(UserService userService,
-                          CommentController commentController) {
+                          YoutubeController youtubeController) {
         this.userService = userService;
-        this.commentController = commentController;
+        this.youtubeController = youtubeController;
     }
 
     @GetMapping("/user-details")
@@ -56,7 +54,7 @@ public class UserController {
         UserDetailsViewModel userDetails = userService.getUserProfile(videoUrl, userName);
 
         if (userDetails.getComments().isEmpty()){
-         commentController.getComments(videoUrl, pageToken, page, sort, model);
+         youtubeController.getComments(videoUrl, pageToken, page, sort, model);
          String error = "No user found with this Username in the comments";
             model.addAttribute("error", error);
 

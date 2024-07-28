@@ -1,7 +1,7 @@
 package com.trollLab.controllers;
 
 import com.trollLab.services.YouTubeService;
-import com.trollLab.views.CommentViewModel;
+import com.trollLab.views.YouTubeCommentViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-public class CommentController {
+public class YoutubeController {
 
     private final YouTubeService youTubeService;
 
     @Autowired
-    public CommentController(YouTubeService youTubeService) {
+    public YoutubeController(YouTubeService youTubeService) {
         this.youTubeService = youTubeService;
     }
 
@@ -27,12 +27,12 @@ public class CommentController {
                               @RequestParam(value = "sort", required = false, defaultValue = "newest") String sort,
                               Model model) {
 
-        List<CommentViewModel> allComments = youTubeService.getComments(videoUrl, pageToken, sort);
+        List<YouTubeCommentViewModel> allComments = youTubeService.getComments(videoUrl, pageToken, sort);
         int pageSize = 100;
         int startIndex = (page - 1) * pageSize;
         int endIndex = Math.min(startIndex + pageSize, allComments.size());
 
-        List<CommentViewModel> paginatedComments = allComments.subList(startIndex, endIndex);
+        List<YouTubeCommentViewModel> paginatedComments = allComments.subList(startIndex, endIndex);
         boolean hasPrevPage = page > 1;
         boolean hasNextPage = endIndex < allComments.size();
 
@@ -58,12 +58,12 @@ public class CommentController {
                                               @RequestParam(value = "sort", required = false, defaultValue = "newest") String sort,
                                               Model model) {
 
-        List<CommentViewModel> allSearchComments = youTubeService.getCommentsBySearchingWords(videoUrl, pageToken, sort, words);
+        List<YouTubeCommentViewModel> allSearchComments = youTubeService.getCommentsBySearchingWords(videoUrl, pageToken, sort, words);
         int pageSize = 100;
         int startIndex = (page - 1) * pageSize;
         int endIndex = Math.min(startIndex + pageSize, allSearchComments.size());
 
-        List<CommentViewModel> paginatedComments = allSearchComments.subList(startIndex, endIndex);
+        List<YouTubeCommentViewModel> paginatedComments = allSearchComments.subList(startIndex, endIndex);
         boolean hasPrevPage = page > 1;
         boolean hasNextPage = endIndex < allSearchComments.size();
 
