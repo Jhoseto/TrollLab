@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,6 @@
             background-size: cover, cover, cover;
         }
     </style>
-
 </head>
 <body class="loaded1">
 <header>
@@ -40,7 +39,7 @@
         <p>Total Comments: <span th:text="${totalComments}">Total Comments</span></p>
     </section>
 
-    <!-- User's Main Comments and Replies -->
+    <!-- Main Comments and Replies -->
     <section id="user-main-comments">
         <h2>Main Comments and Replies</h2>
         <div class="comment-section">
@@ -48,7 +47,6 @@
                 <li th:each="comment : ${comments}" class="comment">
                     <div class="comment-meta">
                         <span class="comment-date" th:text="${comment.publishedAt}">Date</span>
-                        <span class="comment-likes" th:text="${comment.likeCount} + ' likes'">Likes</span>
                     </div>
                     <div class="comment-text" th:utext="${comment.text}">Comment</div>
                     <!-- Replies -->
@@ -56,7 +54,6 @@
                         <div th:each="reply : ${comment.replies}" class="reply">
                             <div class="reply-meta">
                                 <span class="reply-date" th:text="${reply.publishedAt}">Date</span>
-                                <span class="reply-likes" th:text="${reply.likeCount} + ' likes'">Likes</span>
                             </div>
                             <div class="reply-text" th:utext="${reply.text}">Reply</div>
                         </div>
@@ -66,24 +63,33 @@
         </div>
     </section>
 
-    <!-- User's Replies to Other Users' Comments -->
+    <!-- Replies to Other User Comments -->
     <section id="user-replies-to-others">
-        <h2>Replies to Other Users' Comments</h2>
+        <h2>Replies to Other User Comments</h2>
         <div class="reply-section">
             <ul>
                 <li th:each="reply : ${replies}" class="reply">
                     <div class="parent-comment">
-                        <strong>Replying to: <span th:text="${reply.authorDisplayName}"></span></strong>
-
-                        <div class="parent-comment-meta" th:utext="${reply.parentCommentText}">Parent Comment</div>
+                        <strong>Replying to: </strong>
+                        <div class="parent-comment-meta" th:utext="${reply.parentCommentText}">Main Comment</div>
                     </div>
                     <div class="reply-text" th:utext="${reply.text}">Reply</div>
                     <div class="reply-meta">
                         <span class="reply-date" th:text="${reply.publishedAt}">Date</span>
-                        <span class="reply-likes" th:text="${reply.likeCount} + ' likes'">Likes</span>
                     </div>
                 </li>
             </ul>
+        </div>
+        <!-- Hidden data elements -->
+        <div id="formattedDates" th:text="${formattedDates}" style="display:none;"></div>
+        <div id="comments" th:text="${commentsJson}" style="display:none;"></div>
+    </section>
+
+    <!-- Comments Timeline Chart -->
+    <section id="comments-timeline">
+        <h2>Comments Timeline Chart</h2>
+        <div class="chart-container">
+            <canvas id="commentsChart"></canvas>
         </div>
     </section>
 </main>
@@ -91,5 +97,11 @@
 <footer>
     <p>&copy; 2024 TrollLab</p>
 </footer>
+
+<!-- Include JavaScript files -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+<script src="/js/userDetails.js"></script>
+
 </body>
 </html>

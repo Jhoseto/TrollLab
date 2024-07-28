@@ -18,7 +18,7 @@ public class YouTubeCommentViewModel {
     private int totalComments;
     private String authorProfileUrl;
     private boolean isTopLevelComment;
-    private String parentId; // Добавено поле за ID на родителския коментар
+    private String parentId;
     private String parentCommentText;
 
     public YouTubeCommentViewModel(String text, String authorDisplayName, String publishedAt, int likeCount, int totalComments) {

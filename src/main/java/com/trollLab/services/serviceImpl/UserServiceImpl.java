@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private String formatDate(String date) {
+    public String formatDate(String date) {
         LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
         ZoneId zoneId = ZoneId.of("Europe/Sofia");
         ZonedDateTime zonedDateTime = dateTime.atZone(zoneId);

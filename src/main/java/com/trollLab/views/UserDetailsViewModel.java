@@ -11,7 +11,7 @@ public class UserDetailsViewModel {
     private List<YouTubeCommentViewModel> replies;
 
     public UserDetailsViewModel() {
-        // Празен конструктор за десериализация
+
     }
 
     public UserDetailsViewModel(String name, String profileUrl, String profileImageUrl, int totalComments) {
