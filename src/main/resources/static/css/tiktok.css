@@ -1,137 +1,82 @@
-/* Основни стилове на страницата */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    margin: 0;
-    padding: 0;
+    background: linear-gradient(120deg, #000000, #0f5454);
+    font-family: 'Arial', sans-serif;
 }
 
-/* Заглавие на страницата */
+.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
 .title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    color: #5e5e5e;
     font-weight: bold;
-    color: #333;
 }
 
-/* Стилове за формата */
-form {
-    display: flex;
-    gap: 0.5rem;
-}
-
-/* Стилове за секции */
-section {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-/* Стилове за картите */
 .card {
     border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .card-body {
-    padding: 1rem;
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #4d4d4d;
+    margin-bottom: 15px;
 }
 
 .scroll-container {
     max-height: 300px;
     overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 0.5rem;
-    background-color: #f9f9f9;
 }
 
-
-/* Стилове за коментари */
 #commentContainer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100vh;
-    background-color: #fff;
-    border-left: 1px solid #ddd;
-    padding: 1rem;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-    overflow-y: auto;
-}
-
-#commentContainer h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-}
-
-#commentList {
-    margin: 0;
-    padding: 0;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 #commentList li {
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
+    background: #cff2ff;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#commentList li:last-child {
-    border-bottom: none;
+#giftList li, #joinList li, #statusList li, #errorList li {
+    margin-bottom: 10px;
 }
 
-#commentList .username {
-    font-weight: bold;
-    color: #007bff;
+.btn-primary {
+    background-color: #fe2c55;
+    border-color: #fe2c55;
 }
 
-#commentList .message {
-    margin-top: 0.25rem;
+.btn-primary:hover {
+    background-color: #e62d4f;
+    border-color: #e62d4f;
 }
 
-/* Стилове за съобщения */
-#giftList li,
-#joinList li,
-#statusList li,
-#errorList li {
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
+.form-control {
+    border-radius: 20px;
 }
 
-#giftList li:last-child,
-#joinList li:last-child,
-#statusList li:last-child,
-#errorList li:last-child {
-    border-bottom: none;
+.card-header {
+    background: #fe2c55;
+    color: white;
+    border-radius: 15px 15px 0 0;
 }
 
-/* Стилове за разпознаване на имената и съобщенията */
-#giftList li strong,
-#joinList li strong,
-#statusList li strong,
-#commentList li strong {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.25rem;
-}
-
-#giftList li,
-#joinList li,
-#statusList li,
-#commentList li {
-    margin-bottom: 0.5rem;
-}
-#giftList, #joinList, #statusList, #errorList {
-    max-height: 300px; /* Примерна височина, настройте според нуждите */
-    min-height: 300px;
-    overflow-y: auto;
-}
-#commentList{
-    margin: 20px;
-    max-height: 900px; /* Примерна височина, настройте според нуждите */
-    min-height: 300px;
-    overflow-y: auto;
+.card-footer {
+    background: #f0f2f5;
+    border-radius: 0 0 15px 15px;
 }
