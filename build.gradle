@@ -14,7 +14,10 @@ java {
 }
 
 repositories {
+	//mavenLocal()
 	mavenCentral()
+	maven { url 'https://jcenter.bintray.com/' }
+	maven { url 'https://jitpack.io' }
 
 }
 
@@ -23,9 +26,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.json:json:20231013'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+
+	implementation 'com.github.jwdeveloper.TikTok-Live-Java:Client:1.5.0-Release'
+
+
 
 	implementation 'com.restfb:restfb:3.19.0'
 
+	configurations.configureEach {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+	}
 
 }
 

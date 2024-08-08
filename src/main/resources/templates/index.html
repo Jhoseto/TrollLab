@@ -42,7 +42,14 @@
                 <input type="text" id="videoUrl" name="videoUrl" th:value="${videoUrl}">
                 <button type="submit">Analyze</button>
             </form>
+            <h1>Tik-Tok Live User Analysis</h1>
+            <form action="/tiktokAnalyze" method="get">
+                <label for="videoUrl">Paste here TikTok Username :</label>
+                <input type="text" id="tiktokUser" name="tiktokUser" th:value="${videoUrl}">
+                <button type="submit">Analyze </button>
+            </form>
         </div>
+
     </div>
     <div class="user-not-found"
          th:if="${error}">
