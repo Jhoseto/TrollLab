@@ -17,7 +17,6 @@ repositories {
 	//mavenLocal()
 	mavenCentral()
 	maven { url 'https://jitpack.io' }
-
 }
 
 dependencies {
@@ -29,12 +28,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	implementation 'com.github.jwdeveloper.TikTok-Live-Java:Client:1.5.0-Release'
-
-
-
 	implementation 'com.restfb:restfb:3.19.0'
 
-
+	// Exclude conflicting SLF4J binding
+	configurations.configureEach {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+	}
 }
 
 tasks.named('test') {
