@@ -1,0 +1,137 @@
+/* Основни стилове на страницата */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Заглавие на страницата */
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стилове за формата */
+form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Стилове за секции */
+section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Стилове за картите */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.scroll-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+}
+
+
+/* Стилове за коментари */
+#commentContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    background-color: #fff;
+    border-left: 1px solid #ddd;
+    padding: 1rem;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+#commentContainer h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+#commentList {
+    margin: 0;
+    padding: 0;
+}
+
+#commentList li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+#commentList li:last-child {
+    border-bottom: none;
+}
+
+#commentList .username {
+    font-weight: bold;
+    color: #007bff;
+}
+
+#commentList .message {
+    margin-top: 0.25rem;
+}
+
+/* Стилове за съобщения */
+#giftList li,
+#joinList li,
+#statusList li,
+#errorList li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+#giftList li:last-child,
+#joinList li:last-child,
+#statusList li:last-child,
+#errorList li:last-child {
+    border-bottom: none;
+}
+
+/* Стилове за разпознаване на имената и съобщенията */
+#giftList li strong,
+#joinList li strong,
+#statusList li strong,
+#commentList li strong {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+#giftList li,
+#joinList li,
+#statusList li,
+#commentList li {
+    margin-bottom: 0.5rem;
+}
+#giftList, #joinList, #statusList, #errorList {
+    max-height: 300px; /* Примерна височина, настройте според нуждите */
+    min-height: 300px;
+    overflow-y: auto;
+}
+#commentList{
+    margin: 20px;
+    max-height: 900px; /* Примерна височина, настройте според нуждите */
+    min-height: 300px;
+    overflow-y: auto;
+}

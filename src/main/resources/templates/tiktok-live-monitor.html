@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live TikTok Monitor</title>
+    <!-- Bootstrap и Font Awesome от CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <!-- Собствен CSS -->
+    <link rel="stylesheet" href="/css/tiktok.css">
+    <!-- SockJS и STOMP.js от CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <!-- Зареждане на JavaScript файла -->
+    <script src="/js/tiktok.js" defer></script>
+</head>
+<body>
+<div class="container mt-4">
+    <header class="mb-4 text-center">
+        <h1 class="title">Live TikTok Monitor</h1>
+    </header>
+
+    <section class="mb-4">
+        <h2>Следи потребител</h2>
+        <form id="userForm" class="d-flex gap-2">
+            <label for="username" class="form-label">Въведете TikTok ID:</label>
+            <input type="text" id="username" name="tiktokUser" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Следи</button>
+        </form>
+        <div id="message" class="mt-2"></div>
+    </section>
+
+    <section class="mb-4" id="liveDataSection">
+        <h2>Live Data</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Room Information</h5>
+                        <p class="card-text">Room ID: <span id="roomId">-</span></p>
+                        <p class="card-text">Likes: <span id="likesCount">-</span></p>
+                        <p class="card-text">Viewers: <span id="viewersCount">-</span></p>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Gifts</h5>
+                        <div id="giftContainer" class="overflow-auto" style="max-height: 300px;">
+                            <ul id="giftList" class="list-unstyled">
+                                <!-- Списък с подаръци ще бъде добавен тук -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Comments</h5>
+                        <div id="commentContainer" class="scroll-container">
+                            <ul id="commentList" class="list-unstyled">
+                                <!-- Коментарите ще бъдат добавени тук -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Joins</h5>
+                        <div id="joinContainer" class="scroll-container">
+                            <ul id="joinList" class="list-unstyled">
+                                <!-- Списък с нови потребители ще бъде добавен тук -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Status</h5>
+                        <div id="statusContainer" class="scroll-container">
+                            <ul id="statusList" class="list-unstyled">
+                                <!-- Статуси ще бъдат добавени тук -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Errors</h5>
+                        <div id="errorContainer" class="scroll-container">
+                            <ul id="errorList" class="list-unstyled">
+                                <!-- Грешки ще бъдат добавени тук -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
