@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var socket = new SockJS('/ws');
     var stompClient = Stomp.over(socket);
 
+    var commentCount = 0;
+    var joinCount = 0;
+
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
 
@@ -9,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var giftList = document.getElementById('giftList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
-            item.innerHTML = `<strong>${messageData.giftSender || 'Unknown'}</strong>: ${messageData.giftMessage || 'No message'}`;
+            item.innerHTML = `<strong>${messageData.giftSender || ''}</strong>: ${messageData.giftMessage || 'No message'}`;
             giftList.appendChild(item);
             // Скролира до дъното
             giftList.scrollTop = giftList.scrollHeight;
@@ -28,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
             var item = document.createElement('li');
             item.innerHTML = `<strong>${messageData.username || 'Unknown'}</strong> joined the room`;
             joinList.appendChild(item);
+
+            joinCount++;
+            document.getElementById('joinCount').textContent = joinCount;
+
             // Скролира до дъното
             joinList.scrollTop = joinList.scrollHeight;
         });
@@ -59,8 +66,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var item = document.createElement('li');
             item.innerHTML = `<strong>${messageData.commenterName || 'Unknown'}</strong>: ${messageData.commentMessage || 'No message'}`;
             commentList.appendChild(item);
+
+            commentCount++;
+            document.getElementById('commentCount').textContent = commentCount;
+
             // Скролира до дъното
-            commentList.scrollTop = commentList.scrollHeight;
+            commentList.onscrollend = commentList.scrollHeight;
         });
     });
 });

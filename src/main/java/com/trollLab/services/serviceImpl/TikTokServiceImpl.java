@@ -1,6 +1,5 @@
 package com.trollLab.services.serviceImpl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trollLab.services.TikTokService;
 import io.github.jwdeveloper.tiktok.TikTokLive;
 import io.github.jwdeveloper.tiktok.TikTokRoomInfo;
@@ -34,9 +33,10 @@ public class TikTokServiceImpl implements TikTokService {
         TikTokLive.newClient(tiktokUser)
                 .onGift((liveClient, event) -> {
                     Gift gift = event.getGift();
-                    String message = getGiftMessage(gift);
-                    logger.debug("Received gift: {} from {}", message, event.getUser().getProfileName());
-                    sendMessageToWebSocket("/topic/gifts", Map.of("giftMessage", message, "user", event.getUser().getProfileName()));
+                    User user = event.getUser();
+                    String message = user.getProfileName() + " Send-> " + gift.getName();
+                    logger.debug("Received gift: {} from {}", gift.getName(), user.getProfileName());
+                    sendMessageToWebSocket("/topic/gifts", Map.of("giftMessage", message, "user", user.getProfileName()));
                 })
                 .onRoomInfo((liveClient, event) -> {
                     TikTokRoomInfo roomInfo = (TikTokRoomInfo) event.getRoomInfo();
@@ -49,9 +49,8 @@ public class TikTokServiceImpl implements TikTokService {
                 })
                 .onJoin((liveClient, event) -> {
                     User user = event.getUser();
-                    String joinMessage = user.getProfileName();
                     logger.debug("User joined: {}", user.getProfileName());
-                    sendMessageToWebSocket("/topic/join", Map.of("username", event.getUser().getProfileName()));
+                    sendMessageToWebSocket("/topic/join", Map.of("username", user.getProfileName()));
                 })
                 .onConnected((liveClient, event) -> {
                     logger.debug("Connected to the live stream!");
@@ -81,23 +80,5 @@ public class TikTokServiceImpl implements TikTokService {
 
     private void sendMessageToWebSocket(String topic, Map<String, ?> messageData) {
         messagingTemplate.convertAndSend(topic, messageData);
-    }
-
-    private String getGiftMessage(Gift gift) {
-        if (gift == null) {
-            return "Неизвестен подарък";
-        }
-        switch (gift.getName()) {
-            case "ROSE":
-                return "РОЗА!";
-            case "GG":
-                return "ДОБРА ИГРА";
-            case "TIKTOK":
-                return "ЙЕ";
-            case "CORGI":
-                return "Хубав подарък";
-            default:
-                return "Благодаря за " + gift.getName();
-        }
     }
 }
