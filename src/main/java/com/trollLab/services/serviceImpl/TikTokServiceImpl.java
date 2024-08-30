@@ -3,9 +3,13 @@ package com.trollLab.services.serviceImpl;
 import com.trollLab.services.TikTokService;
 import io.github.jwdeveloper.tiktok.TikTokLive;
 import io.github.jwdeveloper.tiktok.TikTokRoomInfo;
+import io.github.jwdeveloper.tiktok.data.models.Picture;
+import io.github.jwdeveloper.tiktok.data.models.badges.Badge;
+import io.github.jwdeveloper.tiktok.data.models.badges.PictureBadge;
 import io.github.jwdeveloper.tiktok.data.models.gifts.Gift;
 import io.github.jwdeveloper.tiktok.data.models.users.User;
 import io.github.jwdeveloper.tiktok.data.events.TikTokCommentEvent;
+import io.github.jwdeveloper.tiktok.data.models.users.UserAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -62,9 +67,41 @@ public class TikTokServiceImpl implements TikTokService {
                 })
                 .onComment((liveClient, event) -> {
                     TikTokCommentEvent commentEvent = (TikTokCommentEvent) event;
-                    String commentMessage = commentEvent.getUser().getProfileName() + " -> " + commentEvent.getText();
-                    sendMessageToWebSocket("/topic/comments", Map.of("commenterName", commentEvent.getUser().getProfileName(),
-                            "commentMessage", commentEvent.getText()));
+                    User user = commentEvent.getUser();
+
+                    // Подготовка на съобщението за коментара
+                    String commentMessage = user.getProfileName() + " -> " + commentEvent.getText();
+
+                    // Извличане на URL на профилната снимка
+                    Picture profilePicture = user.getPicture();
+                    String profileImageUrl = profilePicture != null ? profilePicture.getLink() : "default-image-url.jpg";
+
+                    // Извличане на URL-ите на баджовете
+                    List<Object> badges = user.getBadges().stream()
+                            .map(badge -> {
+                                // Проверяваме дали баджът е от тип PictureBadge, който има изображение
+                                if (badge instanceof PictureBadge) {
+                                    return ((PictureBadge) badge).getPicture().downloadImage();
+                                }
+                                // Ако баджът няма изображение, връщаме празен стринг или заместител
+                                return "";
+                            })
+                            .filter(url -> url != null) // Филтрираме празните и null URL-и
+                            .toList();
+
+                    // Получаване на атрибутите на потребителя
+                    List<String> attributes = user.getAttributes().stream()
+                            .map(UserAttribute::name)  // Конвертиране на атрибутите в низове (имена)
+                            .toList();
+
+                    // Изпращане на съобщението чрез WebSocket
+                    sendMessageToWebSocket("/topic/comments", Map.of(
+                            "commenterName", user.getProfileName(),
+                            "commentMessage", commentEvent.getText(),
+                            "profileImageUrl", profileImageUrl,
+                            "badges", badges,
+                            "attributes", attributes
+                    ));
                 })
                 .configure(settings -> {
                     settings.setClientLanguage("bg"); // Настройка на езика

@@ -64,14 +64,58 @@ document.addEventListener('DOMContentLoaded', function () {
             var commentList = document.getElementById('commentList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
-            item.innerHTML = `<strong>${messageData.commenterName || 'Unknown'}</strong>: ${messageData.commentMessage || 'No message'}`;
+
+            // Създай img елемент за профилната снимка
+            var img = document.createElement('img');
+            img.src = messageData.profileImageUrl || 'default-image-url.jpg';
+            img.alt = messageData.commenterName || 'Unknown';
+            img.style.width = '30px';
+            img.style.height = '30px';
+            img.style.borderRadius = '50%';
+            img.style.marginRight = '10px';
+
+            // Създай span елемент за текста
+            var textSpan = document.createElement('span');
+            textSpan.innerHTML = `<strong>${messageData.commenterName || 'Unknown'}</strong>: ${messageData.commentMessage || 'No message'}`;
+
+            // Добави img и span към li елемента
+            item.appendChild(img);
+
+            // Добави баджовете (ако има такива)
+            if (messageData.badges && messageData.badges.length > 0) {
+                messageData.badges.forEach(function (badgeUrl) {
+                    var badgeImg = document.createElement('img');
+                    badgeImg.src = badgeUrl || 'default-badge-url.jpg';  // Заместител, ако няма валидна снимка на баджа
+                    badgeImg.alt = 'Badge';
+                    badgeImg.style.width = '20px';
+                    badgeImg.style.height = '20px';
+                    badgeImg.style.marginLeft = '5px';
+                    item.appendChild(badgeImg);
+                });
+            }
+
+            // Ако има атрибути, добави ги към текста
+            if (messageData.attributes && messageData.attributes.length > 0) {
+                var attributesSpan = document.createElement('span');
+                attributesSpan.style.fontStyle = 'italic';  // Примерен стил за атрибутите
+                attributesSpan.style.marginLeft = '10px';
+                attributesSpan.textContent = `(${messageData.attributes.join(', ')})`;
+                item.appendChild(attributesSpan);
+            }
+
+            // Добави текста след баджовете и атрибутите
+            item.appendChild(textSpan);
+
+            // Добави новия коментар в списъка
             commentList.appendChild(item);
 
+            // Увеличи брояча на коментарите
             commentCount++;
             document.getElementById('commentCount').textContent = commentCount;
 
-            // Скролира до дъното
-            commentList.onscrollend = commentList.scrollHeight;
+            // Скролирай до дъното
+            item.scrollIntoView({ behavior: 'smooth', block: 'end' });
         });
+
     });
 });
