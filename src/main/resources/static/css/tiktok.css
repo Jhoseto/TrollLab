@@ -80,3 +80,8 @@ body {
     background: #f0f2f5;
     border-radius: 0 0 15px 15px;
 }
+/* Центриране на заглавието */
+#liveDataSection h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}

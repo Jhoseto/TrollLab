@@ -24,7 +24,7 @@
     </header>
 
     <section class="mb-4">
-        <h2>Следи потребител</h2>
+        <h2></h2>
         <form id="userForm" class="d-flex gap-2">
             <label for="username" class="form-label">TikTok Username:</label>
             <input type="text" id="username" name="tiktokUser" class="form-control" required>
@@ -60,6 +60,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Comments</h5>
+                        <p>Total Comments: <span id="commentCount">0</span></p>
                         <div id="commentContainer" class="scroll-container">
                             <ul id="commentList" class="list-unstyled">
                                 <!-- Коментарите ще бъдат добавени тук -->
@@ -70,6 +71,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Latest Joins</h5>
+                        <p>Total Joins: <span id="joinCount">0</span></p>
                         <div id="joinContainer" class="scroll-container">
                             <ul id="joinList" class="list-unstyled">
                                 <!-- Списък с нови потребители ще бъде добавен тук -->

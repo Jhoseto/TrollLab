@@ -12,10 +12,9 @@ import java.util.logging.Level;
 public class TikTokLiveMonitor {
 
     public static void main(String[] args) {
-        // Замени със своя TikTok живо ID
-        String liveId = "ivailogeorgievvv";
+        // TikTok живо ID
+        String liveId = "_natali_4312";
 
-        // Създаване на нов клиент и конфигуриране на обработчици на събития
         TikTokLive.newClient(liveId)
                 .onGift((liveClient, event) -> {
                     Gift gift = event.getGift();
