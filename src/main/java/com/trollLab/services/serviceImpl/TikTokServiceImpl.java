@@ -50,9 +50,15 @@ public class TikTokServiceImpl implements TikTokService {
                     LiveRoomInfo roomInfo = event.getRoomInfo();
                     logger.debug("Room info: {}", roomInfo);
                     sendMessageToWebSocket("/topic/roomInfo", Map.of(
-                            "roomId", roomInfo.getHostName(),
+                            "roomId", roomInfo.getHostUser().getProfileName(),
                             "likes", roomInfo.getLikesCount(),
-                            "viewers", roomInfo.getViewersCount()
+                            "viewers", roomInfo.getViewersCount(),
+                            "startTime", roomInfo.getStartTime(),
+                            "totalViewers", roomInfo.getTotalViewersCount(),
+                            "ranking", roomInfo.getUsersRanking().toString(),
+                            "title", roomInfo.getTitle(),
+                            "picture", roomInfo.getHostUser().getPicture().getLink()
+
                     ));
                 })
                 .onJoin((client, event) -> {

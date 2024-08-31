@@ -68,7 +68,20 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('roomId').textContent = roomInfo.roomId || '-';
             document.getElementById('likesCount').textContent = roomInfo.likes || 0;
             document.getElementById('viewersCount').textContent = roomInfo.viewers || 0;
+            document.getElementById('startTime').textContent = new Date(roomInfo.startTime).toLocaleString() || '-';
+            document.getElementById('totalViewers').textContent = roomInfo.totalViewers || 0;
+            document.getElementById('ranking').textContent = roomInfo.ranking || '-';
+            document.getElementById('title').textContent = roomInfo.title || '-';
+
+            var pictureElement = document.getElementById('picture');
+            if (roomInfo.picture) {
+                pictureElement.src = roomInfo.picture;
+                pictureElement.style.display = 'block';  // Показване на изображението
+            } else {
+                pictureElement.style.display = 'none';   // Скриване на изображението
+            }
         });
+
 
         stompClient.subscribe('/topic/join', function (message) {
             var joinList = document.getElementById('joinList');
