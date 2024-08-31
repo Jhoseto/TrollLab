@@ -201,3 +201,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+
+function clearLocalStorage() {
+    // Изтриване на данни от localStorage (локално)
+    localStorage.clear();
+
+    // Извеждане на съобщение за отстраняване на грешки
+    console.log('Sending request to clear data on server...');
+
+    // Изпращане на заявка към бекенда за изтриване на данни
+    fetch('/api/clear-data', {
+        method: 'GET'
+    })
+        .then(response => response.text())
+        .then(result => {
+            console.log(result); // Покажи съобщение за успех
+            alert('All data has been cleared from both local storage and server.');
+            location.reload(); // Презареди страницата след изтриването
+        })
+        .catch(error => {
+            console.error('Error clearing data:', error);
+            alert('Failed to clear data from the server.');
+        });
+}
+
+// Добавяне на събитие към бутона за изчистване на данни
+document.getElementById('clearStorageBtn').addEventListener('click', clearLocalStorage);
