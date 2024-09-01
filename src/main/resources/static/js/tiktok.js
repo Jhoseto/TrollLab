@@ -70,17 +70,22 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('viewersCount').textContent = roomInfo.viewers || 0;
             document.getElementById('startTime').textContent = new Date(roomInfo.startTime).toLocaleString() || '-';
             document.getElementById('totalViewers').textContent = roomInfo.totalViewers || 0;
+
+            // Display the ranking information with line breaks
             document.getElementById('ranking').textContent = roomInfo.ranking || '-';
+            document.getElementById('ranking').innerHTML = roomInfo.ranking.replace(/\n/g, '<br>');
+
             document.getElementById('title').textContent = roomInfo.title || '-';
 
             var pictureElement = document.getElementById('picture');
             if (roomInfo.picture) {
                 pictureElement.src = roomInfo.picture;
-                pictureElement.style.display = 'block';  // Показване на изображението
+                pictureElement.style.display = 'block';  // Show the image
             } else {
-                pictureElement.style.display = 'none';   // Скриване на изображението
+                pictureElement.style.display = 'none';   // Hide the image
             }
         });
+
 
 
         stompClient.subscribe('/topic/join', function (message) {
@@ -220,24 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
 function clearLocalStorage() {
     // Изтриване на данни от localStorage (локално)
     localStorage.clear();
-
-    // Извеждане на съобщение за отстраняване на грешки
-    console.log('Sending request to clear data on server...');
-
-    // Изпращане на заявка към бекенда за изтриване на данни
-    fetch('/api/clear-data', {
-        method: 'GET'
-    })
-        .then(response => response.text())
-        .then(result => {
-            console.log(result); // Покажи съобщение за успех
-            alert('All data has been cleared from both local storage and server.');
-            location.reload(); // Презареди страницата след изтриването
-        })
-        .catch(error => {
-            console.error('Error clearing data:', error);
-            alert('Failed to clear data from the server.');
-        });
 }
 
 // Добавяне на събитие към бутона за изчистване на данни

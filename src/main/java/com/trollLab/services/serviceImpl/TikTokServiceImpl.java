@@ -2,6 +2,7 @@ package com.trollLab.services.serviceImpl;
 
 import com.trollLab.services.TikTokService;
 import io.github.jwdeveloper.tiktok.TikTokLive;
+import io.github.jwdeveloper.tiktok.data.models.RankingUser;
 import io.github.jwdeveloper.tiktok.live.LiveClient;
 import io.github.jwdeveloper.tiktok.data.models.Picture;
 import io.github.jwdeveloper.tiktok.data.models.badges.PictureBadge;
@@ -17,10 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @Service
 public class TikTokServiceImpl implements TikTokService {
@@ -49,16 +53,30 @@ public class TikTokServiceImpl implements TikTokService {
                 .onRoomInfo((client, event) -> {
                     LiveRoomInfo roomInfo = event.getRoomInfo();
                     logger.debug("Room info: {}", roomInfo);
+
+                    // Format the ranking information
+                    List<RankingUser> rankings = roomInfo.getUsersRanking();
+                    String rankingFormatted = rankings.stream()
+                            .map(rankingUser -> "Rank " + rankingUser.getRank() + ": " +
+                                    rankingUser.getUser().getProfileName() + " (Score: " +
+                                    rankingUser.getScore() + ")")
+                            .collect(Collectors.joining("\n"));
+
+                    // Get current date and time
+                    LocalDateTime now = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    String formattedNow = now.format(formatter);
+
+                    // Send message to WebSocket
                     sendMessageToWebSocket("/topic/roomInfo", Map.of(
                             "roomId", roomInfo.getHostUser().getProfileName(),
                             "likes", roomInfo.getLikesCount(),
                             "viewers", roomInfo.getViewersCount(),
-                            "startTime", roomInfo.getStartTime(),
+                            "startTime", formattedNow,
                             "totalViewers", roomInfo.getTotalViewersCount(),
-                            "ranking", roomInfo.getUsersRanking().toString(),
+                            "ranking", rankingFormatted,
                             "title", roomInfo.getTitle(),
                             "picture", roomInfo.getHostUser().getPicture().getLink()
-
                     ));
                 })
                 .onJoin((client, event) -> {

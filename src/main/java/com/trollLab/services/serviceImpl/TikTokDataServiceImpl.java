@@ -13,6 +13,7 @@ public class TikTokDataServiceImpl implements TikTokDataService {
     @Override
     public void clearAllData() {
         storedData.clear();
+        System.out.println("Clear data");
     }
 
     @Override
