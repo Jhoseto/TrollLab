@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 
-
+    //http://192.168.35.43:8080
+    //http://213.91.128.33:2662
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

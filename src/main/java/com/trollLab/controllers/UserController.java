@@ -3,7 +3,6 @@ package com.trollLab.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trollLab.services.UserService;
-import com.trollLab.services.serviceImpl.UserServiceImpl;
 import com.trollLab.views.UserDetailsViewModel;
 import com.trollLab.views.YouTubeCommentViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ public class UserController {
     private final YoutubeController youtubeController;
 
 
-
     @Autowired
     public UserController(UserService userService,
                           YoutubeController youtubeController) {
@@ -32,7 +30,6 @@ public class UserController {
         this.youtubeController = youtubeController;
 
     }
-
 
 
     @GetMapping("/user-details")
@@ -71,9 +68,6 @@ public class UserController {
 
         return "user-details";
     }
-
-
-
 
 
     @GetMapping("/searchByUser")

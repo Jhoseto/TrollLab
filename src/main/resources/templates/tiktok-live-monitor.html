@@ -15,7 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <!-- Зареждане на JavaScript файла -->
-    <script src="/js/tiktok.js" defer></script>
 </head>
 <body>
 <div class="container mt-4">
@@ -46,8 +45,8 @@
                         <h5 class="card-title">Room Information</h5>
                         <p class="card-text">Room ID: <span id="roomId">-</span></p>
                         <img id="picture" src="" alt="Host Picture"
-                             style="display:none; width: 250px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                             border-radius: 150px; margin-left: 20px; height: auto;" />
+                             style="display:none; width: 250px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+                             border-radius: 150px; padding: 5px; margin-left: 20px; height: auto;" />
                         <p class="card-text">Likes: <span id="likesCount">-</span></p>
                         <p class="card-text">Viewers: <span id="viewersCount">-</span></p>
                         <p class="card-text">Start Time: <span id="startTime">-</span></p>
@@ -114,5 +113,6 @@
         </div>
     </section>
 </div>
+<script src="/js/tiktok.js" defer></script>
 </body>
 </html>

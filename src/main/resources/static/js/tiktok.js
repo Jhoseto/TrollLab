@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function clearLocalStorage() {
     // Изтриване на данни от localStorage (локално)
     localStorage.clear();
+    window.location.href = 'http://localhost:2626';
 }
 
 // Добавяне на събитие към бутона за изчистване на данни
