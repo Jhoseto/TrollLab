@@ -24,11 +24,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.json:json:20231013'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-	compileOnly 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
 	annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	implementation 'org.jsoup:jsoup:1.16.1'
 
 	implementation 'com.github.jwdeveloper.TikTok-Live-Java:Client:1.5.0-Release'
 	implementation 'com.restfb:restfb:3.19.0'
