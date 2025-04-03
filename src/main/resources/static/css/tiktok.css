@@ -4,9 +4,9 @@ body {
 }
 
 .container {
-    background: white;
+    background: #565656;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5);
     padding: 20px;
 }
 
@@ -14,6 +14,7 @@ body {
     font-size: 2.5rem;
     color: #5e5e5e;
     font-weight: bold;
+    text-align: center;
 }
 
 .card {
@@ -39,17 +40,18 @@ body {
 }
 
 #commentContainer {
-    background: #ffffff;
+    background: #d2d2d2;
     border-radius: 10px;
     padding: 10px;
 }
 
 #commentList li {
-    background: #cff2ff;
+    background: #6b6b6b;
     border-radius: 10px;
     margin-bottom: 10px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
 }
 
 #giftList li, #joinList li, #statusList li, #errorList li {
@@ -59,6 +61,12 @@ body {
 .btn-primary {
     background-color: #fe2c55;
     border-color: #fe2c55;
+    padding: 10px 10px;
+    border-radius: 20px;
+    font-size: 1rem;
+    transition: background 0.3s ease-in-out;
+    color: white;
+    cursor: pointer;
 }
 
 .btn-primary:hover {
@@ -66,22 +74,67 @@ body {
     border-color: #e62d4f;
 }
 
-.form-control {
+button {
+    background-color: #fe2c55;
+    border: none;
+    color: #ffffff;
+    padding: 5px 10px;
+    margin-left: 10px;
     border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    font-size: 1rem;
+}
+
+button:hover {
+    padding-top: 10px;
+    padding-left: 20px;
+    background-color: #e62d4f;
+}
+
+input[type="text"] {
+    margin: 10px auto;
+    width: 60%;
+    padding-right: 10px;
+    border: 2px solid #fe2c55;
+    border-radius: 20px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+input[type="text"]:focus {
+    margin-bottom: 10px;
+    padding-right: 10px;
+    padding-top:10px ;
+    padding-bottom: 10px;
+    border-color: #e62d4f;
+    box-shadow: 0 0 8px rgba(254, 44, 85, 0.5);
 }
 
 .card-header {
     background: #fe2c55;
-    color: white;
+    color: #ffffff;
     border-radius: 15px 15px 0 0;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .card-footer {
     background: #f0f2f5;
     border-radius: 0 0 15px 15px;
+    padding: 10px;
+    text-align: center;
 }
+
 /* Центриране на заглавието */
 #liveDataSection h2 {
     text-align: center;
     margin-bottom: 20px;
+}
+#joinList {
+    max-height: 280px;
+    overflow-y: auto;
 }

@@ -19,25 +19,27 @@
 <body>
 <div class="container mt-4">
     <header class="mb-4 text-center">
-        <h1 class="title">Live TikTok Monitor</h1>
+        <h1 class="title" style="color: white;">Live TikTok Monitor</h1>
     </header>
 
     <section class="mb-4">
-        <form action="/api/clear-data"
-              method="get">
-            <button id="clearStorageBtn" class="btn btn-danger mt-3">Clear data and return to Home</button>
+        <form action="/api/clear-data" method="get">
+            <input type="hidden" id="tiktokUserField" name="tiktokUser" th:value="${tiktokUser}" />
+            <button id="clearStorageBtn" class="btn btn-danger mt-3">Clear data</button>
         </form>
         <h2></h2>
-        <form id="userForm" class="d-flex gap-2">
-            <label for="username" class="form-label">TikTok Username:</label>
-            <input type="text" id="username" name="tiktokUser" class="form-control" required>
-            <button type="submit" class="btn btn-primary">Analyze</button>
+        <form action="/tiktokAnalyze" method="get">
+            <label for="tiktokUser" style="color: white; margin-left: 100px;">TikTok Username > :</label>
+            <input type="hidden" id="userIdField" name="userId" />
+            <input type="text" id="tiktokUser" name="tiktokUser" th:value="${tiktokUser}">
+            <button type="submit" >Analyze</button>
+            <span th:if="${error}" th:text="${error}" class="text-danger ms-2"></span>
         </form>
         <div id="message" class="mt-2"></div>
     </section>
 
     <section class="mb-4" id="liveDataSection">
-        <h2>Live Data</h2>
+        <h2 style="color: white;">Live Data </h2>
         <div class="row">
             <div class="col-md-4">
                 <div class="card mb-3">
@@ -113,6 +115,27 @@
         </div>
     </section>
 </div>
+<script>
+    // При зареждане на страницата добавяме стойността на userId от бисквитката към скритото поле
+    window.onload = function() {
+        var userId = getCookie("userId"); // Вземаме стойността на бисквитката
+        if (userId) {
+            document.getElementById("userIdField").value = userId; // Задаваме стойността на скритото поле
+        }
+    };
+
+    // Функция за вземане на стойността на бисквитка
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+</script>
 <script src="/js/tiktok.js" defer></script>
 </body>
 </html>

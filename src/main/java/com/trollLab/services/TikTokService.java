@@ -2,8 +2,9 @@ package com.trollLab.services;
 
 public interface TikTokService {
 
+    void startMonitoring(String userId, String tiktokUser) throws Exception;
 
-    void startMonitoring(String tiktokUser);
+    void stopMonitoring(String userId);
 
-    void stopMonitoring(String tiktokUser);
+    void registerNewUserId(String userId);
 }

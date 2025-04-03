@@ -43,11 +43,9 @@
                 <button type="submit">Analyze</button>
             </form>
             <h1>Tik-Tok Live User Analysis</h1>
-            <form action="/tiktokAnalyze" method="get">
-                <label for="videoUrl">Paste here TikTok Username :</label>
-                <input type="text" id="tiktokUser" name="tiktokUser" th:value="${videoUrl}">
-                <button type="submit">Analyze </button>
-            </form>
+            <a th:href="@{/tiktok-live-monitor}">
+                <button>Go to TikTok Lab</button>
+            </a>
             <div class="navigation-button">
                 <button onclick="window.location.href='/earnings'">
                     View TikTok User Earnings
@@ -163,6 +161,18 @@
         }
     });
 
+</script>
+<script th:inline="javascript">
+    // Вземане на уникалния идентификатор от бисквитката
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([.$?*|{}()[]\/+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    var uniqueUserId = getCookie('uniqueUserId');
+    console.log("Unique User ID from cookie: " + uniqueUserId);
 </script>
 
 </body>

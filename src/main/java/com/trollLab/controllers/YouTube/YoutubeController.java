@@ -1,4 +1,4 @@
-package com.trollLab.controllers;
+package com.trollLab.controllers.YouTube;
 
 import com.trollLab.services.YouTubeService;
 import com.trollLab.views.YouTubeCommentViewModel;
