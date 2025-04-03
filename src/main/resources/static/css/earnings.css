@@ -1,0 +1,78 @@
+/* Основни стилове */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #1d1f21; /* Тъмен фон в TikTok стил */
+    color: #ffffff;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Заглавие */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #ff0050;
+}
+
+/* Поле за търсене */
+.search-box {
+    margin-bottom: 30px;
+}
+
+.search-box input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid #333333;
+    font-size: 1rem;
+    background: #2a2d31;
+    color: #ffffff;
+    outline: none;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 30px;
+    border: none;
+    background: #ff0050;
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s ease;
+}
+
+.search-box button:hover {
+    background: #e60045;
+}
+
+/* Карта за потребителя */
+.user-card {
+    background: #2a2d31;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.user-card h2 {
+    font-size: 1.8rem;
+    color: #ff0050;
+}
+
+.user-card p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+.user-card span {
+    font-weight: bold;
+    color: #ffffff;
+}
