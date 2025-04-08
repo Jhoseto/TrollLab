@@ -12,12 +12,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic"); // Настройване на брокера за обработка на теми
-        config.setApplicationDestinationPrefixes("/app"); // Префикс за обработка на приложения
+        // Настройване само на индивидуални канали за всеки потребител
+        config.enableSimpleBroker("/user"); // Поддържаме само индивидуални канали за потребители
+
+        // Префикс за изпращане на съобщения към сървъра
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").withSockJS(); // Добавяне на WebSocket ендпойнт
+        // Регистрация на WebSocket endpoint
+        registry.addEndpoint("/ws").withSockJS(); // Това е крайният точка за WebSocket
     }
 }

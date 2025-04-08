@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var joinCount = 0;
     let autoScrollEnabled = true;
 
+    // Функция за запазване на данни в localStorage
     function saveData() {
         localStorage.setItem('commentList', document.getElementById('commentList').innerHTML);
         localStorage.setItem('joinList', document.getElementById('joinList').innerHTML);
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('joinCount', joinCount);
     }
 
+    // Функция за зареждане на данни от localStorage
     function loadData() {
         document.getElementById('commentList').innerHTML = localStorage.getItem('commentList') || '';
         document.getElementById('joinList').innerHTML = localStorage.getItem('joinList') || '';
@@ -32,32 +34,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadData();
 
+    // Почиства данните при изпращане на форма
     document.getElementById('tiktokUser').addEventListener('submit', function () {
-        localStorage.removeItem('commentList');
-        localStorage.removeItem('joinList');
-        localStorage.removeItem('giftList');
-        localStorage.removeItem('statusList');
-        localStorage.removeItem('errorList');
-        localStorage.removeItem('commentCount');
-        localStorage.removeItem('joinCount');
+        localStorage.clear();
     });
+
+    // Извлича уникален идентификатор за потребителя от бисквитките
+    const userId = getCookie('uniqueUserId');
+    if (!userId) {
+        console.error('User ID not found in cookies!');
+        return;
+    }
 
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
 
-        stompClient.subscribe('/topic/gifts', function (message) {
+        // Подписване на каналите за съобщения за конкретния потребител
+        stompClient.subscribe(`/user/${userId}/topic/gifts`, function (message) {
             var giftList = document.getElementById('giftList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
-            item.innerHTML = `<strong>${messageData.giftSender || ''}</strong>: ${messageData.giftMessage || 'No message'}`;
+            item.innerHTML = `<strong>${messageData.user || ''}</strong>: ${messageData.giftMessage || 'No message'}`;
             giftList.appendChild(item);
-            if (autoScrollEnabled) {
-                giftList.scrollTop = giftList.scrollHeight;
-            }
+            if (autoScrollEnabled) giftList.scrollTop = giftList.scrollHeight;
             saveData();
         });
 
-        stompClient.subscribe('/topic/roomInfo', function (message) {
+        stompClient.subscribe(`/user/${userId}/topic/roomInfo`, function (message) {
             var roomInfo = JSON.parse(message.body);
 
             document.getElementById('roomId').textContent = roomInfo.roomId || '-';
@@ -67,12 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('ranking').innerHTML = roomInfo.ranking ? roomInfo.ranking.replace(/\n/g, '<br>') : '-';
             document.getElementById('title').textContent = roomInfo.title || '-';
 
-            // Проверка дали startTime вече е запазено
             if (!localStorage.getItem('startTime')) {
                 localStorage.setItem('startTime', roomInfo.startTime);
             }
 
-            // Вземаме запазеното време и го показваме
             var storedStartTime = localStorage.getItem('startTime');
             document.getElementById('startTime').textContent = new Date(storedStartTime).toLocaleString() || '-';
 
@@ -85,7 +86,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        stompClient.subscribe('/topic/join', function (message) {
+        // Подписване на канал за нови потребители
+        stompClient.subscribe(`/user/${userId}/topic/join`, function (message) {
             var joinList = document.getElementById('joinList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
@@ -96,40 +98,37 @@ document.addEventListener('DOMContentLoaded', function () {
             joinCount++;
             document.getElementById('joinCount').textContent = joinCount;
 
-            var joinContainer = document.getElementById('joinList');
             if (autoScrollEnabled) {
-                joinContainer.scrollTop = joinContainer.scrollHeight;
+                joinList.scrollTop = joinList.scrollHeight;
             }
-
             saveData();
         });
 
-        stompClient.subscribe('/topic/status', function (message) {
+        // Подписване на канал за статус съобщения
+        stompClient.subscribe(`/user/${userId}/topic/status`, function (message) {
             var statusList = document.getElementById('statusList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
-            item.innerHTML = `<strong>${messageData.statusSender || 'Unknown'}</strong>: ${messageData.statusMessage || 'No message'}`;
+            item.innerHTML = `<strong>System:</strong> ${messageData.statusMessage || 'No message'}`;
             statusList.appendChild(item);
-            if (autoScrollEnabled) {
-                statusList.scrollTop = statusList.scrollHeight;
-            }
+            if (autoScrollEnabled) statusList.scrollTop = statusList.scrollHeight;
             saveData();
         });
 
-        stompClient.subscribe('/topic/error', function (message) {
+        // Подписване на канал за грешки
+        stompClient.subscribe(`/user/${userId}/topic/error`, function (message) {
             var errorList = document.getElementById('errorList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
             item.innerHTML = `<strong>Error:</strong> ${messageData.errorMessage || 'No message'}`;
             item.style.color = 'red';
             errorList.appendChild(item);
-            if (autoScrollEnabled) {
-                errorList.scrollTop = errorList.scrollHeight;
-            }
+            if (autoScrollEnabled) errorList.scrollTop = errorList.scrollHeight;
             saveData();
         });
 
-        stompClient.subscribe('/topic/comments', function (message) {
+        // Подписване на канал за коментари
+        stompClient.subscribe(`/user/${userId}/topic/comments`, function (message) {
             var commentList = document.getElementById('commentList');
             var messageData = JSON.parse(message.body);
             var item = document.createElement('li');
@@ -152,8 +151,8 @@ document.addEventListener('DOMContentLoaded', function () {
             commentCount++;
             document.getElementById('commentCount').textContent = commentCount;
 
-            var commentContainer = document.getElementById('commentContainer');
             if (autoScrollEnabled) {
+                var commentContainer = document.getElementById('commentContainer');
                 commentContainer.scrollTop = commentContainer.scrollHeight;
             }
 
@@ -161,38 +160,40 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.getElementById('commentContainer').addEventListener('click', function () {
-        autoScrollEnabled = false;
-    });
-
+    // 🎯 Scroll behavior toggle
+    document.getElementById('commentContainer').addEventListener('click', () => autoScrollEnabled = false);
     document.getElementById('commentContainer').addEventListener('scroll', function () {
-        var commentContainer = document.getElementById('commentContainer');
-        if (commentContainer.scrollHeight - commentContainer.scrollTop === commentContainer.clientHeight) {
+        var container = this;
+        if (container.scrollHeight - container.scrollTop === container.clientHeight) {
             autoScrollEnabled = true;
         }
     });
-
     document.addEventListener('click', function (event) {
-        var clickInsideCommentContainer = document.getElementById('commentContainer').contains(event.target);
-        var clickInsideOtherContainers = document.getElementById('joinContainer').contains(event.target) ||
-            document.getElementById('giftContainer').contains(event.target) ||
-            document.getElementById('statusContainer').contains(event.target) ||
-            document.getElementById('errorContainer').contains(event.target);
-        if (!clickInsideCommentContainer && !clickInsideOtherContainers) {
-            autoScrollEnabled = true;
-        }
+        var insideAny = ['commentContainer', 'joinContainer', 'giftContainer', 'statusContainer', 'errorContainer']
+            .some(id => document.getElementById(id).contains(event.target));
+        if (!insideAny) autoScrollEnabled = true;
     });
 
-    document.getElementById("clearStorageBtn").addEventListener("click", function() {
+    // 🧹 Clear Storage
+    document.getElementById("clearStorageBtn").addEventListener("click", function () {
         sessionStorage.clear();
         localStorage.clear();
-
         fetch('/api/clear-data', {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         }).then(() => window.location.reload())
             .catch(error => console.error("Error while clearing data:", error));
     });
+
+    // Функция за извличане на бисквитка
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
 });
