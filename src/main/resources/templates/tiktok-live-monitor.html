@@ -22,6 +22,10 @@
     </header>
 
     <section class="mb-4">
+        <a th:href="@{/home}">
+            <button type="button">Back to Home</button>
+        </a>
+        <h2></h2>
         <form action="/api/clear-data" method="get">
             <input type="hidden" id="tiktokUserField" name="tiktokUser" />
             <button id="clearStorageBtn" class="btn btn-danger mt-3">Clear data</button>
@@ -33,7 +37,15 @@
             <input type="text" id="tiktokUser" name="tiktokUser">
             <button type="submit">Analyze</button>
         </form>
-        <div id="error" class="mt-2" style="color: white"></div>
+        <!-- Съобщенията от контролера -->
+        <div id="message" class="mt-2">
+            <div th:if="${error}" style="color: red; margin-left: 100px;">
+                <p th:text="${error}"></p>
+            </div>
+            <div th:if="${message}" style="color: lightgreen; margin-left: 100px;">
+                <p th:text="${message}"></p>
+            </div>
+        </div>
     </section>
 
     <section class="mb-4" id="liveDataSection">
@@ -44,8 +56,10 @@
                     <div class="card-body">
                         <h5 class="card-title">Room Information</h5>
                         <p class="card-text">Room ID: <span id="roomId">-</span></p>
-                        <img id="picture" src="" alt="Host Picture"
-                             style="display:none; width: 250px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); border-radius: 150px; padding: 5px; margin-left: 20px; height: auto;" />
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                            <img id="picture" src="" alt="Host Picture"
+                                 style="display:none; width: 250px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); border-radius: 150px; padding: 5px; height: auto;" />
+                        </div>
                         <p class="card-text">Likes: <span id="likesCount">-</span></p>
                         <p class="card-text">Viewers: <span id="viewersCount">-</span></p>
                         <p class="card-text">Start Time: <span id="startTime">-</span></p>

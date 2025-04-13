@@ -14,6 +14,7 @@ import io.github.jwdeveloper.tiktok.live.LiveRoomInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -67,6 +68,12 @@ public class TikTokServiceImpl implements TikTokService {
                     .onRoomInfo((client, event) -> {
                         LiveRoomInfo roomInfo = event.getRoomInfo();
 
+                        // Проверка за възрастово ограничение
+                        if (roomInfo.isAgeRestricted()) {
+                            sendMessageToUser(userId, "/topic/error", Map.of("errorMessage", "This live stream is age-restricted."));
+                            return ; // Спиране на обработката, ако е възрастово ограничен
+                        }
+
                         List<RankingUser> rankings = roomInfo.getUsersRanking();
                         String rankingFormatted = rankings.stream()
                                 .map(r -> "Rank " + r.getRank() + ": " +
@@ -78,6 +85,7 @@ public class TikTokServiceImpl implements TikTokService {
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
                         sendMessageToUser(userId, "/topic/roomInfo", Map.of(
+                                "restricted", roomInfo.isAgeRestricted(),
                                 "roomId", roomInfo.getHostName(),
                                 "likes", roomInfo.getLikesCount(),
                                 "viewers", roomInfo.getViewersCount(),

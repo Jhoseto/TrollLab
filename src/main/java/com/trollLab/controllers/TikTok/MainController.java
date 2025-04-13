@@ -42,4 +42,9 @@ public class MainController {
         }
         return "index";
     }
+
+    @GetMapping("/home")
+    public String home(){
+        return "redirect:/";
+    }
 }
